@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airbnb.API", "Airbnb.API\Airbnb.API.csproj", "{5BAB5256-CD30-45FB-835C-9CB337AC3CD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airbnb.Core", "Airbnb.Core\Airbnb.Core.csproj", "{07265AAC-6000-4814-B06B-3E71DD0C61CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airbnb.Repository", "Airbnb.Repository\Airbnb.Repository.csproj", "{92AC6751-32EB-4B15-B8DC-92FC7D13F3E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airbnb.Service", "Airbnb.Service\Airbnb.Service.csproj", "{279DAE7B-08F2-44A7-8201-51959D243B96}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5BAB5256-CD30-45FB-835C-9CB337AC3CD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BAB5256-CD30-45FB-835C-9CB337AC3CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BAB5256-CD30-45FB-835C-9CB337AC3CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BAB5256-CD30-45FB-835C-9CB337AC3CD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07265AAC-6000-4814-B06B-3E71DD0C61CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07265AAC-6000-4814-B06B-3E71DD0C61CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07265AAC-6000-4814-B06B-3E71DD0C61CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07265AAC-6000-4814-B06B-3E71DD0C61CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92AC6751-32EB-4B15-B8DC-92FC7D13F3E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92AC6751-32EB-4B15-B8DC-92FC7D13F3E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92AC6751-32EB-4B15-B8DC-92FC7D13F3E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92AC6751-32EB-4B15-B8DC-92FC7D13F3E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{279DAE7B-08F2-44A7-8201-51959D243B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{279DAE7B-08F2-44A7-8201-51959D243B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{279DAE7B-08F2-44A7-8201-51959D243B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{279DAE7B-08F2-44A7-8201-51959D243B96}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0EAD9FF3-D4DD-4EBB-ADAD-F4E9ED162CC7}
+	EndGlobalSection
+EndGlobal
