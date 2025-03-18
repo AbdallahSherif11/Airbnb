@@ -19,7 +19,8 @@ namespace Airbnb.Core.Entities.Identity
         public string NationalId { get; set; }
         public bool IsAgreed { get; set; }
         public bool IsDeleted { get; set; }
+        public ICollection<House> Houses { get; set; }
+        public ICollection<WishList> WishLists { get; set; }
 
-        public virtual List<WishList> WishLists { get; set; } = new List<WishList>();
     }
 }
