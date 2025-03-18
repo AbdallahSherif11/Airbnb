@@ -11,7 +11,7 @@ namespace Airbnb.Core.Entities.Models
     {
         public int WishListId { get; set; }
         public int HouseId { get; set; }
-        public int GuestId { get; set; }
+        public string GuestId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
     }

@@ -14,10 +14,18 @@ namespace Airbnb.Repository.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<WishList> builder)
         {
+            builder.HasKey(w => w.WishListId);
+
+            builder.Property(w => w.HouseId)
+                   .IsRequired();
+
+            builder.Property(w => w.GuestId)
+                   .IsRequired();
+
             builder.HasOne(w => w.ApplicationUser)
-                  .WithMany(u => u.WishLists)
-                  .HasForeignKey(w => w.GuestId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                   .WithMany(u => u.WishLists)
+                   .HasForeignKey(w => w.GuestId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
