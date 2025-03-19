@@ -22,10 +22,19 @@ namespace Airbnb.Repository.Data.Configurations
             builder.Property(w => w.GuestId)
                    .IsRequired();
 
+            builder.Property(w => w.IsDeleted)
+                   .IsRequired()
+                   .HasDefaultValue(false);
+
             builder.HasOne(w => w.ApplicationUser)
                    .WithMany(u => u.WishLists)
                    .HasForeignKey(w => w.GuestId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(w => w.House)
+                   .WithMany(u => u.WishLists)
+                   .HasForeignKey(w => w.HouseId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

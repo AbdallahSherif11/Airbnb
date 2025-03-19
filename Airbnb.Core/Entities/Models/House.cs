@@ -29,7 +29,9 @@ namespace Airbnb.Core.Entities.Models
         public ApplicationUser ApplicationUser { get; set; }
 
         public ICollection<Image> Images { get; set; }
-
-
+        public ICollection<WishList> WishLists { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<HouseAmenity> HouseAmenities { get; set; }
     }
 }

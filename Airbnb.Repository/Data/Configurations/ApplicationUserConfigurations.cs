@@ -25,7 +25,8 @@ namespace Airbnb.Repository.Data.Configurations
                    .IsRequired();
 
             builder.Property(P => P.CreatedAt)
-                   .IsRequired();
+                   .IsRequired()
+                   .HasDefaultValueSql("GetUTCDATE()");
 
             builder.Property(P => P.Address)
                    .IsRequired()

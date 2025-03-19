@@ -7,13 +7,18 @@ using System.Threading.Tasks;
 
 namespace Airbnb.Core.Entities.Models
 {
-    public class WishList
+    public class Review
     {
-        public int WishListId { get; set; }
-        public int HouseId { get; set; }
+        public int ReviewId { get; set; }
         public string GuestId { get; set; }
+        public int BookingId { get; set; }
+        public int HouseId { get; set; }
+        public int Rating { get; set; }
+        public string? Comment { get; set; }
         public bool IsDeleted { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public ApplicationUser ApplicationUser { get; set; }
         public House House { get; set; }
+        public Booking Booking { get; set; }
     }
 }

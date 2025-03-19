@@ -40,7 +40,8 @@ namespace Airbnb.Repository.Data.Configurations
                    .HasMaxLength(100);
 
             builder.Property(h => h.CreatedAt)
-                   .IsRequired();
+                   .IsRequired()
+                   .HasDefaultValueSql("GetUTCDATE()");
 
             builder.Property(h => h.IsAvailable)
                    .IsRequired();
@@ -67,12 +68,12 @@ namespace Airbnb.Repository.Data.Configurations
             builder.HasMany(h => h.Images)
                    .WithOne(i => i.House)
                    .HasForeignKey(i => i.HouseId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(h => h.ApplicationUser)
                    .WithMany(u => u.Houses)
                    .HasForeignKey(h => h.HostId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

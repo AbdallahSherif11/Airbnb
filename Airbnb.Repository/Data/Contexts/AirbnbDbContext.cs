@@ -16,6 +16,14 @@ namespace Airbnb.Repository.Data.Contexts
         public DbSet<WishList> WishLists { get; set; }
         public DbSet<House> Houses { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Messages> Messages { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Amenity> Amenities { get; set; }
+        public DbSet<HouseAmenity> HouseAmenities { get; set; }
+        public DbSet<Payment> Payments{ get; set; }
+
+
         public AirbnbDbContext(DbContextOptions<AirbnbDbContext> options) : base(options) 
         {
 

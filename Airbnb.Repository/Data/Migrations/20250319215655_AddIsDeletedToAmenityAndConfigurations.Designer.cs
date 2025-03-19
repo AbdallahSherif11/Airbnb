@@ -4,6 +4,7 @@ using Airbnb.Repository.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Airbnb.Repository.Data.Migrations
 {
     [DbContext(typeof(AirbnbDbContext))]
-    partial class AirbnbDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250319215655_AddIsDeletedToAmenityAndConfigurations")]
+    partial class AddIsDeletedToAmenityAndConfigurations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -360,49 +363,6 @@ namespace Airbnb.Repository.Data.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Payment", b =>
-                {
-                    b.Property<int>("PaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
-
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("PaymentCode")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("PaymentId");
-
-                    b.HasIndex("BookingId")
-                        .IsUnique();
-
-                    b.ToTable("Payments");
-                });
-
             modelBuilder.Entity("Airbnb.Core.Entities.Models.Review", b =>
                 {
                     b.Property<int>("ReviewId")
@@ -691,17 +651,6 @@ namespace Airbnb.Repository.Data.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Payment", b =>
-                {
-                    b.HasOne("Airbnb.Core.Entities.Models.Booking", "Booking")
-                        .WithOne("Payment")
-                        .HasForeignKey("Airbnb.Core.Entities.Models.Payment", "BookingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-                });
-
             modelBuilder.Entity("Airbnb.Core.Entities.Models.Review", b =>
                 {
                     b.HasOne("Airbnb.Core.Entities.Models.Booking", "Booking")
@@ -821,9 +770,6 @@ namespace Airbnb.Repository.Data.Migrations
 
             modelBuilder.Entity("Airbnb.Core.Entities.Models.Booking", b =>
                 {
-                    b.Navigation("Payment")
-                        .IsRequired();
-
                     b.Navigation("Review")
                         .IsRequired();
                 });

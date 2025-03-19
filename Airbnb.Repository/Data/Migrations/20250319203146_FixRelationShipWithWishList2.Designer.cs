@@ -4,6 +4,7 @@ using Airbnb.Repository.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Airbnb.Repository.Data.Migrations
 {
     [DbContext(typeof(AirbnbDbContext))]
-    partial class AirbnbDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250319203146_FixRelationShipWithWishList2")]
+    partial class FixRelationShipWithWishList2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,74 +130,6 @@ namespace Airbnb.Repository.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Amenity", b =>
-                {
-                    b.Property<int>("AmenityId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AmenityId"));
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AmenityId");
-
-                    b.ToTable("Amenities");
-                });
-
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Booking", b =>
-                {
-                    b.Property<int>("BookingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
-
-                    b.Property<DateOnly>("CheckInDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("CheckOutDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetUTCDATE()");
-
-                    b.Property<string>("GuestId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("HouseId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("BookingId");
-
-                    b.HasIndex("GuestId");
-
-                    b.HasIndex("HouseId");
-
-                    b.ToTable("Bookings");
-                });
-
             modelBuilder.Entity("Airbnb.Core.Entities.Models.House", b =>
                 {
                     b.Property<int>("HouseId")
@@ -272,26 +207,6 @@ namespace Airbnb.Repository.Data.Migrations
                     b.ToTable("Houses");
                 });
 
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.HouseAmenity", b =>
-                {
-                    b.Property<int>("HouseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AmenityId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.HasKey("HouseId", "AmenityId");
-
-                    b.HasIndex("AmenityId");
-
-                    b.ToTable("HouseAmenities");
-                });
-
             modelBuilder.Entity("Airbnb.Core.Entities.Models.Image", b =>
                 {
                     b.Property<int>("ImageId")
@@ -349,7 +264,7 @@ namespace Airbnb.Repository.Data.Migrations
                     b.Property<DateTime>("TimeStamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetUTCDATE()");
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.HasKey("MessageId");
 
@@ -358,96 +273,6 @@ namespace Airbnb.Repository.Data.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Payment", b =>
-                {
-                    b.Property<int>("PaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
-
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("PaymentCode")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("PaymentId");
-
-                    b.HasIndex("BookingId")
-                        .IsUnique();
-
-                    b.ToTable("Payments");
-                });
-
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Review", b =>
-                {
-                    b.Property<int>("ReviewId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
-
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetUTCDATE()");
-
-                    b.Property<string>("GuestId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("HouseId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.HasKey("ReviewId");
-
-                    b.HasIndex("BookingId")
-                        .IsUnique();
-
-                    b.HasIndex("GuestId");
-
-                    b.HasIndex("HouseId");
-
-                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Airbnb.Core.Entities.Models.WishList", b =>
@@ -612,25 +437,6 @@ namespace Airbnb.Repository.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Booking", b =>
-                {
-                    b.HasOne("Airbnb.Core.Entities.Identity.ApplicationUser", "ApplicationUser")
-                        .WithMany("Bookings")
-                        .HasForeignKey("GuestId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Airbnb.Core.Entities.Models.House", "House")
-                        .WithMany("Bookings")
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("House");
-                });
-
             modelBuilder.Entity("Airbnb.Core.Entities.Models.House", b =>
                 {
                     b.HasOne("Airbnb.Core.Entities.Identity.ApplicationUser", "ApplicationUser")
@@ -640,25 +446,6 @@ namespace Airbnb.Repository.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.HouseAmenity", b =>
-                {
-                    b.HasOne("Airbnb.Core.Entities.Models.Amenity", "Amenity")
-                        .WithMany("HouseAmenities")
-                        .HasForeignKey("AmenityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Airbnb.Core.Entities.Models.House", "House")
-                        .WithMany("HouseAmenities")
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Amenity");
-
-                    b.Navigation("House");
                 });
 
             modelBuilder.Entity("Airbnb.Core.Entities.Models.Image", b =>
@@ -689,44 +476,6 @@ namespace Airbnb.Repository.Data.Migrations
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Payment", b =>
-                {
-                    b.HasOne("Airbnb.Core.Entities.Models.Booking", "Booking")
-                        .WithOne("Payment")
-                        .HasForeignKey("Airbnb.Core.Entities.Models.Payment", "BookingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-                });
-
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Review", b =>
-                {
-                    b.HasOne("Airbnb.Core.Entities.Models.Booking", "Booking")
-                        .WithOne("Review")
-                        .HasForeignKey("Airbnb.Core.Entities.Models.Review", "BookingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Airbnb.Core.Entities.Identity.ApplicationUser", "ApplicationUser")
-                        .WithMany("Reviews")
-                        .HasForeignKey("GuestId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Airbnb.Core.Entities.Models.House", "House")
-                        .WithMany("Reviews")
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("House");
                 });
 
             modelBuilder.Entity("Airbnb.Core.Entities.Models.WishList", b =>
@@ -801,42 +550,18 @@ namespace Airbnb.Repository.Data.Migrations
 
             modelBuilder.Entity("Airbnb.Core.Entities.Identity.ApplicationUser", b =>
                 {
-                    b.Navigation("Bookings");
-
                     b.Navigation("Houses");
 
                     b.Navigation("ReceivedMessages");
-
-                    b.Navigation("Reviews");
 
                     b.Navigation("SentMessages");
 
                     b.Navigation("WishLists");
                 });
 
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Amenity", b =>
-                {
-                    b.Navigation("HouseAmenities");
-                });
-
-            modelBuilder.Entity("Airbnb.Core.Entities.Models.Booking", b =>
-                {
-                    b.Navigation("Payment")
-                        .IsRequired();
-
-                    b.Navigation("Review")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Airbnb.Core.Entities.Models.House", b =>
                 {
-                    b.Navigation("Bookings");
-
-                    b.Navigation("HouseAmenities");
-
                     b.Navigation("Images");
-
-                    b.Navigation("Reviews");
 
                     b.Navigation("WishLists");
                 });

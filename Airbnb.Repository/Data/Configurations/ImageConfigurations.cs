@@ -19,10 +19,14 @@ namespace Airbnb.Repository.Data.Configurations
                    .IsRequired()
                    .HasMaxLength(255);
 
+            builder.Property(i => i.IsDeleted)
+                   .IsRequired()
+                   .HasDefaultValue(false);
+
             builder.HasOne(i => i.House)
                    .WithMany(h => h.Images)
                    .HasForeignKey(i => i.HouseId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

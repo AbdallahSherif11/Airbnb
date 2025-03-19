@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace Airbnb.Core.Entities.Models
 {
-    public class Image
+    public class Amenity
     {
-        public int ImageId { get; set; }
-        public string Url { get; set; }
-        public int HouseId { get; set; }
+        public int AmenityId { get; set; }
+        public string Name { get; set; }
         public bool IsDeleted { get; set; }
-
-        public House House { get; set; }
+        public ICollection<HouseAmenity> HouseAmenities { get; set; } 
 
     }
 }

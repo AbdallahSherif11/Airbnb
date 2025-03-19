@@ -16,11 +16,16 @@ namespace Airbnb.Core.Entities.Identity
         public DateOnly DateOfBirth { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string Address { get; set; }
+        public string ProfilePictureUrl { get; set; }
         public string NationalId { get; set; }
         public bool IsAgreed { get; set; }
         public bool IsDeleted { get; set; }
         public ICollection<House> Houses { get; set; }
         public ICollection<WishList> WishLists { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
+        public ICollection<Messages> SentMessages { get; set; }
+        public ICollection<Messages> ReceivedMessages { get; set; }
+        public ICollection<Review> Reviews { get; set; }
 
     }
 }
