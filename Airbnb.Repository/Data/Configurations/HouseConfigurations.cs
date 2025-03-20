@@ -27,6 +27,14 @@ namespace Airbnb.Repository.Data.Configurations
                    .IsRequired()
                    .HasColumnType("decimal(18,2)");
 
+            builder.Property(h => h.Latitude)
+                   .IsRequired()
+                   .HasColumnType("decimal(18,2)");
+
+            builder.Property(h => h.Longitude)
+                   .IsRequired()
+                   .HasColumnType("decimal(18,2)");
+
             builder.Property(h => h.Country)
                    .IsRequired()
                    .HasMaxLength(50);

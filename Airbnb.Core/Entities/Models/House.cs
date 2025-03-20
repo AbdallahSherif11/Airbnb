@@ -18,6 +18,8 @@ namespace Airbnb.Core.Entities.Models
         public string Country { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public bool IsAvailable { get; set; }
         public int MaxDays { get; set; }

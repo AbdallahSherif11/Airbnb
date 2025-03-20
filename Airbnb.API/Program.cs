@@ -1,5 +1,9 @@
 
+using Airbnb.Core.Repositories.Contract;
+using Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract;
 using Airbnb.Repository.Data.Contexts;
+using Airbnb.Repository.Repositories;
+using Airbnb.Repository.Repositories.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 
 namespace Airbnb.API
@@ -19,6 +23,10 @@ namespace Airbnb.API
             // Add DbContext
             builder.Services.AddDbContext<AirbnbDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // DIC
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddScoped<IHouseRepository, HouseRepository>();    
 
 
 
