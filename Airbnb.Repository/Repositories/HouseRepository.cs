@@ -17,7 +17,7 @@ namespace Airbnb.Repository.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<House>> GetAll()
+        public async Task<IEnumerable<House>> GetAllAsync()
         {
             return await _context.Houses.Where(p=> p.IsDeleted == false).ToListAsync();
         }

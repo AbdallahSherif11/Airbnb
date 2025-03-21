@@ -14,13 +14,23 @@ namespace Airbnb.Repository.Repositories.UnitOfWorks
         private readonly AirbnbDbContext _context;
         private IHouseRepository _houseRepository;
 
-        public IHouseRepository HouseRepository => _houseRepository;
-
         public UnitOfWork(AirbnbDbContext context)
         {
             _context = context;
-            _houseRepository = new HouseRepository(context);
+            //_houseRepository = new HouseRepository(context);
         }
+        public IHouseRepository HouseRepository
+        {
+            get
+            {
+                if (_houseRepository == null)
+                {
+                    _houseRepository = new HouseRepository(_context);
+                }
+                return _houseRepository;
+            }
+        }
+
 
         public async Task<int> CompleteSaveAsync()
         {
