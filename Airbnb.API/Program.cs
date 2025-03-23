@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Airbnb.API
 {
+    //Hi from main
     public class Program
     {
         public static void Main(string[] args)
