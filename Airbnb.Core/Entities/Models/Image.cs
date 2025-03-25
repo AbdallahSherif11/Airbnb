@@ -13,7 +13,7 @@ namespace Airbnb.Core.Entities.Models
         public int HouseId { get; set; }
         public bool IsDeleted { get; set; }
 
-        public House House { get; set; }
+        public virtual House House { get; set; }
 
     }
 }

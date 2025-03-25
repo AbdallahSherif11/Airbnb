@@ -17,8 +17,8 @@ namespace Airbnb.Core.Entities.Models
         public string? Comment { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public ApplicationUser ApplicationUser { get; set; }
-        public House House { get; set; }
-        public Booking Booking { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual House House { get; set; }
+        public virtual Booking Booking { get; set; }
     }
 }

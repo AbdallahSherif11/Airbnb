@@ -17,7 +17,7 @@ namespace Airbnb.Core.Entities.Models
 
         public DateTime TimeStamp { get; set; } = DateTime.Now;
 
-        public ApplicationUser Sender { get; set; }
-        public ApplicationUser Receiver { get; set; }
+        public virtual ApplicationUser Sender { get; set; }
+        public virtual ApplicationUser Receiver { get; set; }
     }
 }

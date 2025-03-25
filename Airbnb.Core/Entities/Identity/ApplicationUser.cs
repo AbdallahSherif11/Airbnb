@@ -20,12 +20,12 @@ namespace Airbnb.Core.Entities.Identity
         public string NationalId { get; set; }
         public bool IsAgreed { get; set; }
         public bool IsDeleted { get; set; }
-        public ICollection<House> Houses { get; set; }
-        public ICollection<WishList> WishLists { get; set; }
-        public ICollection<Booking> Bookings { get; set; }
-        public ICollection<Messages> SentMessages { get; set; }
-        public ICollection<Messages> ReceivedMessages { get; set; }
-        public ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<House> Houses { get; set; }
+        public virtual ICollection<WishList> WishLists { get; set; }
+        public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual ICollection<Messages> SentMessages { get; set; }
+        public virtual ICollection<Messages> ReceivedMessages { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
 
     }
 }

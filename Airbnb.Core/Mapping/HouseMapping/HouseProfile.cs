@@ -41,16 +41,16 @@ namespace Airbnb.Core.Mapping.HouseMapping
             }).ReverseMap();
 
 
-            CreateMap<House, CreateHouseDTO>().AfterMap((src, dest) =>
-            {
+            //CreateMap<House, CreateHouseDTO>().AfterMap((src, dest) =>
+            //{
 
-            }).ReverseMap();
+            //}).ReverseMap();
 
 
-            CreateMap<House, UpdateHouseDTO>().AfterMap((src, dest) =>
-            {
+            //CreateMap<House, UpdateHouseDTO>().AfterMap((src, dest) =>
+            //{
 
-            }).ReverseMap();
+            //}).ReverseMap();
         }
     }
 }

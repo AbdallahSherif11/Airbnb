@@ -1,4 +1,5 @@
-﻿using Airbnb.Core.Entities.Models;
+﻿using Airbnb.Core.DTOs.HouseDTOs;
+using Airbnb.Core.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace Airbnb.Core.Services.Contract.HouseServices.Contract
 {
     public interface IHouseService
     {
-        Task<IEnumerable<House>> GetAllHousesAsync();
-        Task<House> GetHouseByIdAsync(int id);
+        Task<IEnumerable<ReadHouseDTO>> GetAllHousesAsync();
+        Task<ReadHouseDTO> GetHouseByIdAsync(int id);
         Task AddHouseAsync(House house);
         Task UpdateHouseAsync(House house);
         Task DeleteHouseAsync(int houseId);

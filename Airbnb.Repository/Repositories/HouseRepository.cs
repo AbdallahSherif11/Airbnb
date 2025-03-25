@@ -36,10 +36,13 @@ namespace Airbnb.Repository.Repositories
             _context.Entry(house).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
         }
 
-        public async Task Delete(House house)
+        public async Task DeleteAsync(int id)
         {
-            House h = await GetAsync(house.HouseId);
-            h.IsDeleted = true;
+            House h = await GetAsync(id);
+            if (h != null)
+            {
+                h.IsDeleted = true;
+            }
         }
 
         public async Task<IEnumerable<House>> GetAvailableHousesAsync()

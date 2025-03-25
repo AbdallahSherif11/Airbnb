@@ -14,7 +14,7 @@ namespace Airbnb.Core.Repositories.Contract
         Task<House> GetAsync(int id);
         Task AddAsync(House house);
         void Update(House house);
-        Task Delete(House house);
+        Task DeleteAsync(int id);
 
 
         Task<IEnumerable<House>>  GetHousesByCityAsync(string city);

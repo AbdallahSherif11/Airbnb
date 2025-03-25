@@ -11,7 +11,7 @@ namespace Airbnb.Core.Entities.Models
         public int AmenityId { get; set; }
         public string Name { get; set; }
         public bool IsDeleted { get; set; }
-        public ICollection<HouseAmenity> HouseAmenities { get; set; } 
+        public virtual ICollection<HouseAmenity> HouseAmenities { get; set; } 
 
     }
 }
