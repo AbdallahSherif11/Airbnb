@@ -16,6 +16,6 @@ namespace Airbnb.Core.Entities.Models
         public decimal TotalPrice { get; set; }
         public bool Status { get; set; }
         public bool IsDeleted { get; set; }
-        public Booking Booking { get; set; } // Navigation property
+        public virtual Booking Booking { get; set; } 
     }
 }

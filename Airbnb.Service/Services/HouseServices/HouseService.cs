@@ -1,5 +1,8 @@
-﻿using Airbnb.Core.Entities.Models;
+﻿using Airbnb.Core.DTOs.HouseDTOs;
+using Airbnb.Core.Entities.Models;
+using Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract;
 using Airbnb.Core.Services.Contract.HouseServices.Contract;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,49 +13,64 @@ namespace Airbnb.Service.Services.HouseServices
 {
     public class HouseService : IHouseService
     {
-        public Task AddHouseAsync(House house)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public HouseService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public Task DeleteHouseAsync(int houseId)
+        public async Task<IEnumerable<ReadHouseDTO>> GetAllHousesAsync()
         {
-            throw new NotImplementedException();
+            var houses = await _unitOfWork.HouseRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<ReadHouseDTO>>(houses);
         }
 
-        public Task<IEnumerable<House>> GetAllHousesAsync()
+        public async Task<ReadHouseDTO> GetHouseByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var house = await _unitOfWork.HouseRepository.GetAsync(id);
+            return _mapper.Map<ReadHouseDTO>(house);
         }
 
-        public Task<IEnumerable<House>> GetAvailableHousesAsync()
+        public async Task AddHouseAsync(House house)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.HouseRepository.AddAsync(house);
+            await _unitOfWork.CompleteSaveAsync(); 
         }
 
-        public Task<House> GetHouseByIdAsync(int id)
+        public async Task UpdateHouseAsync(House house)
         {
-            throw new NotImplementedException();
+            _unitOfWork.HouseRepository.Update(house);
+            await _unitOfWork.CompleteSaveAsync(); 
         }
 
-        public Task<IEnumerable<House>> GetHousesByCityAsync(string city)
+        public async Task DeleteHouseAsync(int houseId)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.HouseRepository.DeleteAsync(houseId);
+            await _unitOfWork.CompleteSaveAsync(); 
         }
 
-        public Task<IEnumerable<House>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice)
+        public async Task<IEnumerable<House>> GetAvailableHousesAsync()
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.HouseRepository.GetAvailableHousesAsync();
         }
 
-        public Task<IEnumerable<House>> SearchHousesAsync(string keyword)
+        public async Task<IEnumerable<House>> GetHousesByCityAsync(string city)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.HouseRepository.GetHousesByCityAsync(city);
         }
 
-        public Task UpdateHouseAsync(House house)
+        public async Task<IEnumerable<House>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.HouseRepository.GetHousesByPriceRangeAsync(minPrice, maxPrice);
         }
+
+        public async Task<IEnumerable<House>> SearchHousesAsync(string keyword)
+        {
+            return await _unitOfWork.HouseRepository.SearchHousesAsync(keyword);
+        }
+
     }
 }

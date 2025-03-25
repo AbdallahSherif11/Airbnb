@@ -1,9 +1,14 @@
 
+using Airbnb.Core.Entities.Identity;
+using Airbnb.Core.Mapping.HouseMapping;
 using Airbnb.Core.Repositories.Contract;
 using Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract;
+using Airbnb.Core.Services.Contract.HouseServices.Contract;
 using Airbnb.Repository.Data.Contexts;
 using Airbnb.Repository.Repositories;
 using Airbnb.Repository.Repositories.UnitOfWorks;
+using Airbnb.Service.Services.HouseServices;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Airbnb.API
@@ -22,11 +27,19 @@ namespace Airbnb.API
 
             // Add DbContext
             builder.Services.AddDbContext<AirbnbDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // DIC
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddAutoMapper(typeof(HouseProfile));
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                            .AddEntityFrameworkStores<AirbnbDbContext>()
+                            .AddDefaultTokenProviders();
             //builder.Services.AddScoped<IHouseRepository, HouseRepository>();    
+
+            builder.Services.AddScoped<IHouseService, HouseService>();
+
+
 
 
 

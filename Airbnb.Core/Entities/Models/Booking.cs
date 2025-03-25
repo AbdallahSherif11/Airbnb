@@ -18,9 +18,9 @@ namespace Airbnb.Core.Entities.Models
         public decimal TotalPrice { get; set; }
         public string PaymentMethod { get; set; }
         public bool IsDeleted { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
-        public House House { get; set; }
-        public Review Review { get; set; }
-        public Payment Payment { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual House House { get; set; }
+        public virtual Review Review { get; set; }
+        public virtual Payment Payment { get; set; }
     }
 }
