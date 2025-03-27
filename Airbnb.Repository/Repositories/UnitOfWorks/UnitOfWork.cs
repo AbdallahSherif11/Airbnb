@@ -13,6 +13,8 @@ namespace Airbnb.Repository.Repositories.UnitOfWorks
     {
         private readonly AirbnbDbContext _context;
         private IHouseRepository _houseRepository;
+        private IAmenityRepository _amenityRepository;
+        private IHouseAmenityRepository _houseAmenityRepository;
 
         public UnitOfWork(AirbnbDbContext context)
         {
@@ -28,6 +30,30 @@ namespace Airbnb.Repository.Repositories.UnitOfWorks
                     _houseRepository = new HouseRepository(_context);
                 }
                 return _houseRepository;
+            }
+        }
+
+        public IAmenityRepository AmenityRepository
+        {
+            get
+            {
+                if (_amenityRepository == null)
+                {
+                    _amenityRepository = new AmenityRepository(_context);
+                }
+                return _amenityRepository;
+            }
+        }
+
+        public IHouseAmenityRepository HouseAmenityRepository
+        {
+            get
+            {
+                if (_houseAmenityRepository == null)
+                {
+                    _houseAmenityRepository = new HouseAmenityRepository(_context);
+                }
+                return _houseAmenityRepository;
             }
         }
 

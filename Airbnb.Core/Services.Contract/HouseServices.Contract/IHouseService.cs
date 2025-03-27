@@ -1,4 +1,5 @@
-﻿using Airbnb.Core.DTOs.HouseDTOs;
+﻿using Airbnb.Core.DTOs.HouseAmenityDTO;
+using Airbnb.Core.DTOs.HouseDTOs;
 using Airbnb.Core.Entities.Models;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -13,12 +14,12 @@ namespace Airbnb.Core.Services.Contract.HouseServices.Contract
     {
         Task<IEnumerable<ReadHouseDTO>> GetAllHousesAsync();
         Task<ReadHouseDTO> GetHouseByIdAsync(int id);
-        Task AddHouseAsync(CreateHouseDTO createHouseDTO, List<IFormFile> images);
+        Task AddHouseAsync(CreateHouseDTO createHouseDTO,List<CreateHouseAmenityDTO> createHouseAmenityDTO, List<IFormFile> images);
         Task UpdateHouseAsync(House house);
         Task DeleteHouseAsync(int houseId);
-        Task<IEnumerable<House>> GetHousesByCityAsync(string city);
-        Task<IEnumerable<House>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice);
-        Task<IEnumerable<House>> GetAvailableHousesAsync();
-        Task<IEnumerable<House>> SearchHousesAsync(string keyword);
+        Task<IEnumerable<ReadHouseDTO>> GetHousesByCityAsync(string city);
+        Task<IEnumerable<ReadHouseDTO>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice);
+        Task<IEnumerable<ReadHouseDTO>> GetAvailableHousesAsync();
+        Task<IEnumerable<ReadHouseDTO>> SearchHousesAsync(string keyword);
     }
 }

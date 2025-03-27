@@ -42,6 +42,10 @@ namespace Airbnb.Repository.Repositories
             if (h != null)
             {
                 h.IsDeleted = true;
+                //foreach(var x in h.HouseAmenities)
+                //{
+                //    x.IsDeleted = true;
+                //}
             }
         }
 
