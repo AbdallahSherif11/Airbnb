@@ -78,14 +78,15 @@ namespace Airbnb.API.Controllers
 
         // POST: api/house
         [HttpPost]
-        public async Task<ActionResult> AddHouse([FromBody] House house)
+        public async Task<ActionResult> AddHouse([FromForm] CreateHouseDTO createHouseDTO, [FromForm] List<IFormFile> images)
         {
-            if (house == null)
+            if (createHouseDTO == null)
             {
                 return BadRequest("House data is invalid.");
             }
-            await _houseService.AddHouseAsync(house);
-            return CreatedAtAction(nameof(GetHouseById), new { id = house.HouseId }, house);
+            await _houseService.AddHouseAsync(createHouseDTO, images);
+            //return CreatedAtAction(nameof(GetHouseById), new { id = createHouseDTO.HouseId }, createHouseDTO);
+            return Ok();
         }
 
         // PUT: api/house/5

@@ -35,16 +35,13 @@ namespace Airbnb.Core.Mapping.HouseMapping
                     GuestName = B.ApplicationUser.FirstName
                 }).ToList();
 
-                //dest.Amenities = src.HouseAmenities.Select(HA => HA.Amenity.Name).ToList(); // Reviews
-                //dest.Amenities = src.HouseAmenities.Select(HA => HA.Amenity.Name).ToList(); // Bookings
-
             }).ReverseMap();
 
 
-            //CreateMap<House, CreateHouseDTO>().AfterMap((src, dest) =>
-            //{
-
-            //}).ReverseMap();
+            CreateMap<House, CreateHouseDTO>().AfterMap((src, dest) =>
+            {
+                //dest.Images = src.Images.Select(I => I.Url).ToList();
+            }).ReverseMap();
 
 
             //CreateMap<House, UpdateHouseDTO>().AfterMap((src, dest) =>

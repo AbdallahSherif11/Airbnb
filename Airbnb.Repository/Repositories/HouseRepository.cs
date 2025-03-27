@@ -74,5 +74,34 @@ namespace Airbnb.Repository.Repositories
                                     )
                             .ToListAsync();
         }
+
+
+
+
+
+        public async Task AddImageAsync(int houseId, Image image)
+        {
+            var house = await _context.Houses.Include(h => h.Images)
+                            .FirstOrDefaultAsync(h => h.HouseId == houseId);
+            if (house != null)
+            {
+                house.Images ??= new List<Image>();
+                house.Images.Add(image);
+            }
+        }
+
+        public async Task<Image> GetImageAsync(int imageId)
+        {
+            return await _context.Images.FindAsync(imageId);
+        }
+
+        public async Task DeleteImageAsync(int imageId)
+        {
+            var image = await GetImageAsync(imageId);
+            if (image != null)
+            {
+                _context.Images.Remove(image);
+            }
+        }
     }
 }
