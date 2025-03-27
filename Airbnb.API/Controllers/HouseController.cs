@@ -1,4 +1,5 @@
-﻿using Airbnb.Core.DTOs.HouseDTOs;
+﻿using Airbnb.Core.DTOs.HouseAmenityDTO;
+using Airbnb.Core.DTOs.HouseDTOs;
 using Airbnb.Core.Entities.Models;
 using Airbnb.Core.Services.Contract.HouseServices.Contract;
 using Microsoft.AspNetCore.Http;
@@ -78,13 +79,14 @@ namespace Airbnb.API.Controllers
 
         // POST: api/house
         [HttpPost]
-        public async Task<ActionResult> AddHouse([FromForm] CreateHouseDTO createHouseDTO, [FromForm] List<IFormFile> images)
+        //[Consumes("multipart/form-data")]
+        public async Task<ActionResult> AddHouse([FromForm] CreateHouseDTO createHouseDTO, [FromForm] List<CreateHouseAmenityDTO> createHouseAmenityDTO, [FromForm] List<IFormFile> images)
         {
             if (createHouseDTO == null)
             {
                 return BadRequest("House data is invalid.");
             }
-            await _houseService.AddHouseAsync(createHouseDTO, images);
+            await _houseService.AddHouseAsync(createHouseDTO, createHouseAmenityDTO, images);
             //return CreatedAtAction(nameof(GetHouseById), new { id = createHouseDTO.HouseId }, createHouseDTO);
             return Ok();
         }

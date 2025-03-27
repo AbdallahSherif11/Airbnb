@@ -1,4 +1,5 @@
-﻿using Airbnb.Core.DTOs.HouseDTOs;
+﻿using Airbnb.Core.DTOs.HouseAmenityDTO;
+using Airbnb.Core.DTOs.HouseDTOs;
 using Airbnb.Core.Entities.Models;
 using Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract;
 using Airbnb.Core.Services.Contract.HouseServices.Contract;
@@ -39,7 +40,7 @@ namespace Airbnb.Service.Services.HouseServices
             return _mapper.Map<ReadHouseDTO>(house);
         }
 
-        public async Task AddHouseAsync(CreateHouseDTO createHouseDTO, List<IFormFile> images)
+        public async Task AddHouseAsync(CreateHouseDTO createHouseDTO, List<CreateHouseAmenityDTO> createHouseAmenityDTO, List<IFormFile> images)
         {
             var house = _mapper.Map<House>(createHouseDTO);
             await _unitOfWork.HouseRepository.AddAsync(house);
@@ -54,6 +55,16 @@ namespace Airbnb.Service.Services.HouseServices
                     HouseId = house.HouseId,
                 };
                 await _unitOfWork.HouseRepository.AddImageAsync(house.HouseId, imageEntity);
+            }
+
+            foreach (var x in createHouseAmenityDTO)
+            {
+                var houseAmenityEntity = new HouseAmenity
+                {
+                    AmenityId = x.AmenityId,
+                    HouseId = house.HouseId,
+                };
+                await _unitOfWork.HouseAmenityRepository.AddAsync(houseAmenityEntity);
             }
 
             await _unitOfWork.CompleteSaveAsync();
@@ -71,24 +82,28 @@ namespace Airbnb.Service.Services.HouseServices
             await _unitOfWork.CompleteSaveAsync(); 
         }
 
-        public async Task<IEnumerable<House>> GetAvailableHousesAsync()
+        public async Task<IEnumerable<ReadHouseDTO>> GetAvailableHousesAsync()
         {
-            return await _unitOfWork.HouseRepository.GetAvailableHousesAsync();
+            var houses = await _unitOfWork.HouseRepository.GetAvailableHousesAsync();
+            return _mapper.Map<IEnumerable<ReadHouseDTO>>(houses);
         }
 
-        public async Task<IEnumerable<House>> GetHousesByCityAsync(string city)
+        public async Task<IEnumerable<ReadHouseDTO>> GetHousesByCityAsync(string city)
         {
-            return await _unitOfWork.HouseRepository.GetHousesByCityAsync(city);
+            var houses = await _unitOfWork.HouseRepository.GetHousesByCityAsync(city);
+            return _mapper.Map<IEnumerable<ReadHouseDTO>>(houses);
         }
 
-        public async Task<IEnumerable<House>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice)
+        public async Task<IEnumerable<ReadHouseDTO>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice)
         {
-            return await _unitOfWork.HouseRepository.GetHousesByPriceRangeAsync(minPrice, maxPrice);
+            var houses = await _unitOfWork.HouseRepository.GetHousesByPriceRangeAsync(minPrice, maxPrice);
+            return _mapper.Map<IEnumerable<ReadHouseDTO>>(houses);
         }
 
-        public async Task<IEnumerable<House>> SearchHousesAsync(string keyword)
+        public async Task<IEnumerable<ReadHouseDTO>> SearchHousesAsync(string keyword)
         {
-            return await _unitOfWork.HouseRepository.SearchHousesAsync(keyword);
+            var houses = await _unitOfWork.HouseRepository.SearchHousesAsync(keyword);
+            return _mapper.Map<IEnumerable<ReadHouseDTO>>(houses);
         }
 
 

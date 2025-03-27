@@ -1,4 +1,5 @@
 ﻿using Airbnb.Core.DTOs.BookingDTOs;
+using Airbnb.Core.DTOs.HouseAmenityDTO;
 using Airbnb.Core.DTOs.HouseDTOs;
 using Airbnb.Core.DTOs.ReviewDTOs;
 using Airbnb.Core.Entities.Models;
@@ -40,14 +41,29 @@ namespace Airbnb.Core.Mapping.HouseMapping
 
             CreateMap<House, CreateHouseDTO>().AfterMap((src, dest) =>
             {
-                //dest.Images = src.Images.Select(I => I.Url).ToList();
+
             }).ReverseMap();
 
-
-            //CreateMap<House, UpdateHouseDTO>().AfterMap((src, dest) =>
+            //CreateMap<House, CreateHouseDTO>().AfterMap((src, dest) =>
             //{
+            //    dest.CHouseAmenities = src.HouseAmenities.Select(ha => new CreateHouseAmenityDTO
+            //    {
+            //        AmenityId = ha.AmenityId
+            //    }).ToList();
+            //}).ReverseMap().AfterMap((src, dest) =>
+            //{
+            //    dest.HouseAmenities = src.CHouseAmenities.Select(ha => new HouseAmenity
+            //    {
+            //        AmenityId = ha.AmenityId,
+            //        HouseId = dest.HouseId
+            //    }).ToList();
+            //});
 
-            //}).ReverseMap();
+
+            CreateMap<House, UpdateHouseDTO>().AfterMap((src, dest) =>
+            {
+
+            }).ReverseMap();
         }
     }
 }
