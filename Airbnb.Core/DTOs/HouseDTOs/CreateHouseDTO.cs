@@ -1,5 +1,6 @@
 ﻿using Airbnb.Core.Entities.Identity;
 using Airbnb.Core.Entities.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Airbnb.Core.DTOs.HouseDTOs
         public string View { get; set; }
         public int NumberOfRooms { get; set; }
         public int NumberOfBeds { get; set; }
-        public List<string> Images { get; set; }
-        public ICollection<HouseAmenity> HouseAmenities { get; set; }
+        //public List<IFormFile> Images { get; set; }
+        //public ICollection<HouseAmenity> HouseAmenities { get; set; }
     }
 }

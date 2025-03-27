@@ -8,8 +8,13 @@ using Airbnb.Repository.Data.Contexts;
 using Airbnb.Repository.Repositories;
 using Airbnb.Repository.Repositories.UnitOfWorks;
 using Airbnb.Service.Services.HouseServices;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+
+
 
 namespace Airbnb.API
 {
@@ -20,7 +25,6 @@ namespace Airbnb.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -38,9 +42,8 @@ namespace Airbnb.API
             //builder.Services.AddScoped<IHouseRepository, HouseRepository>();    
 
             builder.Services.AddScoped<IHouseService, HouseService>();
-
-
-
+            builder.Services.AddScoped<IImageService, ImageService>();
+            builder.Services.AddHttpContextAccessor(); // For accessing wwwroot
 
 
             var app = builder.Build();
@@ -56,10 +59,12 @@ namespace Airbnb.API
 
             app.UseAuthorization();
 
+            app.UseStaticFiles(); // Serves files from wwwroot
 
             app.MapControllers();
 
             app.Run();
         }
+
     }
 }
