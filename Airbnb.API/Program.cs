@@ -1,12 +1,15 @@
 
 using Airbnb.Core.Entities.Identity;
+using Airbnb.Core.Mapping.AccountMapping;
 using Airbnb.Core.Mapping.HouseMapping;
 using Airbnb.Core.Repositories.Contract;
 using Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract;
 using Airbnb.Core.Services.Contract.HouseServices.Contract;
+using Airbnb.Core.Services.Contract.IdentityServices.Contract;
 using Airbnb.Repository.Data.Contexts;
 using Airbnb.Repository.Repositories;
 using Airbnb.Repository.Repositories.UnitOfWorks;
+using Airbnb.Service.Services.AccountServices;
 using Airbnb.Service.Services.HouseServices;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
@@ -35,7 +38,7 @@ namespace Airbnb.API
 
             // DIC
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(typeof(HouseProfile));
+            builder.Services.AddAutoMapper(typeof(HouseProfile), typeof(AccountProfile));
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                             .AddEntityFrameworkStores<AirbnbDbContext>()
                             .AddDefaultTokenProviders();
@@ -43,6 +46,7 @@ namespace Airbnb.API
 
             builder.Services.AddScoped<IHouseService, HouseService>();
             builder.Services.AddScoped<IImageService, ImageService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddHttpContextAccessor(); // For accessing wwwroot
 
 
