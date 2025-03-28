@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Airbnb.Core.Entities.Identity
@@ -14,9 +15,9 @@ namespace Airbnb.Core.Entities.Identity
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateOnly DateOfBirth { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
         public string Address { get; set; }
-        public string ProfilePictureUrl { get; set; }
+        public string ProfilePictureUrl { get; set; } = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2TgOv9CMmsUzYKCcLGWPvqcpUk6HXp2mnww&s";
         public string NationalId { get; set; }
         public bool IsAgreed { get; set; }
         public bool IsDeleted { get; set; }
