@@ -11,11 +11,14 @@ using Airbnb.Repository.Repositories;
 using Airbnb.Repository.Repositories.UnitOfWorks;
 using Airbnb.Service.Services.AccountServices;
 using Airbnb.Service.Services.HouseServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text;
 
 
 
@@ -36,6 +39,11 @@ namespace Airbnb.API
             builder.Services.AddDbContext<AirbnbDbContext>(options =>
             options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // to access appsetting.json
+            var configuration = builder.Configuration;
+
+            builder.Services.AddSingleton<IConfiguration>(configuration);
+
             // DIC
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(typeof(HouseProfile), typeof(AccountProfile));
@@ -49,6 +57,30 @@ namespace Airbnb.API
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddHttpContextAccessor(); // For accessing wwwroot
 
+            //JWT Validation
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -61,6 +93,7 @@ namespace Airbnb.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseStaticFiles(); // Serves files from wwwroot

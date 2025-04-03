@@ -2,6 +2,7 @@
 using Airbnb.Core.DTOs.HouseDTOs;
 using Airbnb.Core.Entities.Models;
 using Airbnb.Core.Services.Contract.HouseServices.Contract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ namespace Airbnb.API.Controllers
 
         // GET: api/house
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<ReadHouseDTO>>> GetAllHouses()
         {
             var houses = await _houseService.GetAllHousesAsync();

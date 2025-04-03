@@ -31,5 +31,17 @@ namespace Airbnb.API.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(UserLoginDTO userLoginDTO)
+        {
+            var token = await _accountService.LoginAsync(userLoginDTO);
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("Invalid credentials");
+            }
+
+            return Ok(new { Token = token });
+        }
     }
 }
