@@ -10,5 +10,6 @@ namespace Airbnb.Core.Services.Contract.IdentityServices.Contract
     public interface IAccountService
     {
         Task<bool> RegisterAsync(UserRegisterDTO userRegisterDTO);
+        Task<string> LoginAsync(UserLoginDTO userLoginDTO);
     }
 }
