@@ -18,7 +18,7 @@ namespace Airbnb.Core.Mapping.HouseMapping
         {
             CreateMap<House, ReadHouseDTO>().AfterMap((src, dest) =>
             {
-                dest.Images = src.Images.Select(I => I.Url).ToList();
+                dest.Images = src.Images.Where(I=> I.IsDeleted == false).Select(I => I.Url).ToList();
                 dest.HostName = src.ApplicationUser.FirstName;
                 dest.Amenities = src.HouseAmenities.Select(HA => HA.Amenity.Name).ToList();
 

@@ -24,7 +24,8 @@ namespace Airbnb.Repository.Repositories
 
         public async Task<House> GetAsync(int id)
         {
-            return await _context.Houses.FindAsync(id);
+            //return await _context.Houses.FindAsync(id);
+            return await _context.Houses.FirstOrDefaultAsync(H => H.HouseId == id);
         }
 
         public async Task AddAsync(House house)
@@ -74,7 +75,7 @@ namespace Airbnb.Repository.Repositories
                                     h.Country.Contains(keyword) ||
                                     h.City.Contains(keyword) ||
                                     h.Street.Contains(keyword) ||
-                                    h.View.Contains(keyword)) && h.IsDeleted == false
+                                    h.HouseView.Contains(keyword)) && h.IsDeleted == false
                                     )
                             .ToListAsync();
         }
