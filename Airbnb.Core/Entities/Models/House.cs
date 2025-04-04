@@ -25,7 +25,7 @@ namespace Airbnb.Core.Entities.Models
         public bool IsAvailable { get; set; }
         public int MaxDays { get; set; }
         public int MaxGuests { get; set; }
-        public string View { get; set; }
+        public string HouseView { get; set; }
         public int NumberOfRooms { get; set; }
         public int NumberOfBeds { get; set; }
         public bool IsDeleted { get; set; }

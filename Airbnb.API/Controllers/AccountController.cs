@@ -18,7 +18,7 @@ namespace Airbnb.API.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterDTO userRegisterDTO)
         {
             var r = _accountService.RegisterAsync(userRegisterDTO);

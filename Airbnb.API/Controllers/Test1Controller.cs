@@ -129,7 +129,7 @@ namespace Airbnb.API.Controllers
                 IsAvailable = true,
                 MaxDays = 30,
                 MaxGuests = 4,
-                View = "Mountain view",
+                HouseView = "Mountain view",
                 NumberOfRooms = 2,
                 NumberOfBeds = 3,
                 IsDeleted = false,

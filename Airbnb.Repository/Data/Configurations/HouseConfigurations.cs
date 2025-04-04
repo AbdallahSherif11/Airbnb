@@ -60,7 +60,7 @@ namespace Airbnb.Repository.Data.Configurations
             builder.Property(h => h.MaxGuests)
                    .IsRequired();
 
-            builder.Property(h => h.View)
+            builder.Property(h => h.HouseView)
                    .HasMaxLength(50);
 
             builder.Property(h => h.NumberOfRooms)

@@ -70,11 +70,7 @@ namespace Airbnb.Service.Services.HouseServices
             await _unitOfWork.CompleteSaveAsync();
         }
 
-        public async Task UpdateHouseAsync(House house)
-        {
-            _unitOfWork.HouseRepository.Update(house);
-            await _unitOfWork.CompleteSaveAsync(); 
-        }
+        
 
         public async Task DeleteHouseAsync(int houseId)
         {
@@ -136,6 +132,91 @@ namespace Airbnb.Service.Services.HouseServices
                 await _unitOfWork.CompleteSaveAsync();
             }
         }
+
+
+        #region Update House Region
+
+        public async Task UpdateHouseTitle(int houseId, string title)
+        {
+            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+
+            house.Title = title;
+            _unitOfWork.HouseRepository.Update(house);
+            await _unitOfWork.CompleteSaveAsync();
+        }
+
+        public async Task UpdateHouseDescription(int houseId, string description)
+        {
+            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+
+            house.Description = description;
+            _unitOfWork.HouseRepository.Update(house);
+            await _unitOfWork.CompleteSaveAsync();
+        }
+
+        public async Task UpdateHousePricePerNight(int houseId, decimal PricePerNight)
+        {
+            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+
+            house.PricePerNight = PricePerNight;
+            _unitOfWork.HouseRepository.Update(house);
+            await _unitOfWork.CompleteSaveAsync();
+        }
+
+        public async Task UpdateHouseLocation(int houseId, UpdateHouseLocationDTO updateHouseLocationDTO)
+        {
+            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+
+            house.Country = updateHouseLocationDTO.Country;
+            house.City = updateHouseLocationDTO.City;
+            house.Street = updateHouseLocationDTO.Street;
+            house.Latitude = updateHouseLocationDTO.Latitude;
+            house.Longitude = updateHouseLocationDTO.Longitude;
+
+            _unitOfWork.HouseRepository.Update(house);
+            await _unitOfWork.CompleteSaveAsync();
+        }
+
+        public async Task UpdateHouseAvailability(int houseId, UpdateHouseAvailabilityDTO updateHouseAvailabilityDTO)
+        {
+            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+
+            house.IsAvailable = updateHouseAvailabilityDTO.IsAvailable;
+            house.MaxDays = updateHouseAvailabilityDTO.MaxDays;
+            house.MaxGuests = updateHouseAvailabilityDTO.MaxGuests;
+            house.HouseView = updateHouseAvailabilityDTO.HouseView;
+            house.NumberOfRooms = updateHouseAvailabilityDTO.NumberOfRooms;
+            house.NumberOfBeds = updateHouseAvailabilityDTO.NumberOfBeds;
+
+            _unitOfWork.HouseRepository.Update(house);
+            await _unitOfWork.CompleteSaveAsync();
+        }
+
+        public async Task UpdateHouseImages(int houseId, List<IFormFile> images)
+        {
+            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+            
+            foreach(var OldImage in house.Images)
+            {
+                OldImage.IsDeleted = true;
+            }
+
+            foreach (var image in images)
+            {
+                var imagePath = await _imageService.SaveHouseImageAsync(image, house.HouseId);
+                var imageEntity = new Image
+                {
+                    Url = imagePath,
+                    HouseId = house.HouseId,
+                };
+                await _unitOfWork.HouseRepository.AddImageAsync(house.HouseId, imageEntity);
+            }
+
+            await _unitOfWork.CompleteSaveAsync();
+        }
+
+
+        #endregion
 
     }
 }

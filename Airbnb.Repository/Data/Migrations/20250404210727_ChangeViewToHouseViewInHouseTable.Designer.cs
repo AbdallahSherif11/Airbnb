@@ -4,6 +4,7 @@ using Airbnb.Repository.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Airbnb.Repository.Data.Migrations
 {
     [DbContext(typeof(AirbnbDbContext))]
-    partial class AirbnbDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250404210727_ChangeViewToHouseViewInHouseTable")]
+    partial class ChangeViewToHouseViewInHouseTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

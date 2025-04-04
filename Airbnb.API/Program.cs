@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Text;
 
 
@@ -37,7 +38,9 @@ namespace Airbnb.API
 
             // Add DbContext
             builder.Services.AddDbContext<AirbnbDbContext>(options =>
-            options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                        options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
             // to access appsetting.json
             var configuration = builder.Configuration;

@@ -15,11 +15,22 @@ namespace Airbnb.Core.Services.Contract.HouseServices.Contract
         Task<IEnumerable<ReadHouseDTO>> GetAllHousesAsync();
         Task<ReadHouseDTO> GetHouseByIdAsync(int id);
         Task AddHouseAsync(CreateHouseDTO createHouseDTO,List<CreateHouseAmenityDTO> createHouseAmenityDTO, List<IFormFile> images);
-        Task UpdateHouseAsync(House house);
         Task DeleteHouseAsync(int houseId);
         Task<IEnumerable<ReadHouseDTO>> GetHousesByCityAsync(string city);
         Task<IEnumerable<ReadHouseDTO>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice);
         Task<IEnumerable<ReadHouseDTO>> GetAvailableHousesAsync();
         Task<IEnumerable<ReadHouseDTO>> SearchHousesAsync(string keyword);
+
+
+        #region Update House Region
+        //Task UpdateHouseAsync(House house);
+
+        Task UpdateHouseTitle(int houseId, string title);
+        Task UpdateHouseDescription(int houseId, string description);
+        Task UpdateHousePricePerNight(int houseId, decimal PricePerNight);
+        Task UpdateHouseLocation(int houseId, UpdateHouseLocationDTO updateHouseLocationDTO);
+        Task UpdateHouseAvailability(int houseId, UpdateHouseAvailabilityDTO updateHouseAvailabilityDTO);
+        Task UpdateHouseImages(int houseId, List<IFormFile> images);
+        #endregion
     }
 }
