@@ -6,11 +6,13 @@ using Airbnb.Core.Repositories.Contract;
 using Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract;
 using Airbnb.Core.Services.Contract.HouseServices.Contract;
 using Airbnb.Core.Services.Contract.IdentityServices.Contract;
+using Airbnb.Core.Services.Contract.Review.Contract;
 using Airbnb.Repository.Data.Contexts;
 using Airbnb.Repository.Repositories;
 using Airbnb.Repository.Repositories.UnitOfWorks;
 using Airbnb.Service.Services.AccountServices;
 using Airbnb.Service.Services.HouseServices;
+using Airbnb.Service.Services.ReviewServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
@@ -58,6 +60,7 @@ namespace Airbnb.API
             builder.Services.AddScoped<IHouseService, HouseService>();
             builder.Services.AddScoped<IImageService, ImageService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
             builder.Services.AddHttpContextAccessor(); // For accessing wwwroot
 
             //JWT Validation

@@ -236,5 +236,12 @@ namespace Airbnb.API.Controllers
         }
 
         #endregion
+
+        //[HttpGet("Reviewww")]
+        //public async Task<IActionResult> getAllReviews()
+        //{
+
+        //}
+
     }
 }
