@@ -16,27 +16,32 @@ namespace Airbnb.Core.Mapping.HouseMapping
     {
         public HouseProfile()
         {
-            CreateMap<House, ReadHouseDTO>().AfterMap((src, dest) =>
+            CreateMap<House, ReadHouseDTO>()
+            .ForMember(dest => dest.Images, opt => opt.Ignore())
+            .ForMember(dest => dest.HostName, opt => opt.Ignore())
+            .ForMember(dest => dest.Amenities, opt => opt.Ignore())
+            .ForMember(dest => dest.Reviews, opt => opt.Ignore())
+            .ForMember(dest => dest.Bookings, opt => opt.Ignore())
+            .AfterMap((src, dest) =>
             {
-                dest.Images = src.Images.Where(I=> I.IsDeleted == false).Select(I => I.Url).ToList();
-                dest.HostName = src.ApplicationUser.FirstName;
-                dest.Amenities = src.HouseAmenities.Select(HA => HA.Amenity.Name).ToList();
+                dest.Images = src.Images?.Select(i => i.Url).ToList() ?? new List<string>();
+                dest.HostName = src.ApplicationUser?.FirstName ?? string.Empty;
+                dest.Amenities = src.HouseAmenities?.Select(ha => ha.Amenity.Name).ToList() ?? new List<string>();
 
-                dest.Reviews = src.Reviews.Select(R => new ReadReviewDTO
+                dest.Reviews = src.Reviews?.Select(r => new ReadReviewDTO
                 {
-                    ReviewerName = R.ApplicationUser.FirstName,
-                    Comment = R.Comment,
-                    Rating = R.Rating
-                }).ToList();
+                    ReviewerName = r.ApplicationUser?.FirstName ?? "",
+                    Comment = r.Comment,
+                    Rating = r.Rating
+                }).ToList() ?? new List<ReadReviewDTO>();
 
-                dest.Bookings = src.Bookings.Select(B => new ReadBookingDTO
+                dest.Bookings = src.Bookings?.Select(b => new ReadBookingDTO
                 {
-                    CheckIn = B.CheckInDate,
-                    CheckOut = B.CheckOutDate,
-                    GuestName = B.ApplicationUser.FirstName
-                }).ToList();
-
-            }).ReverseMap();
+                    CheckIn = b.CheckInDate,
+                    CheckOut = b.CheckOutDate,
+                    GuestName = b.ApplicationUser?.FirstName ?? ""
+                }).ToList() ?? new List<ReadBookingDTO>();
+            });
 
 
             CreateMap<House, CreateHouseDTO>().AfterMap((src, dest) =>

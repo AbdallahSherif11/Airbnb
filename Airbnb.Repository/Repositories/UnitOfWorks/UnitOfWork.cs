@@ -1,5 +1,6 @@
 ﻿using Airbnb.Core.Repositories.Contract;
 using Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract;
+using Airbnb.Core.Services.Contract.Review.Contract;
 using Airbnb.Repository.Data.Contexts;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace Airbnb.Repository.Repositories.UnitOfWorks
         private IHouseRepository _houseRepository;
         private IAmenityRepository _amenityRepository;
         private IHouseAmenityRepository _houseAmenityRepository;
+        private IReviewRepository _reviewRepository;
 
         public UnitOfWork(AirbnbDbContext context)
         {
@@ -54,6 +56,18 @@ namespace Airbnb.Repository.Repositories.UnitOfWorks
                     _houseAmenityRepository = new HouseAmenityRepository(_context);
                 }
                 return _houseAmenityRepository;
+            }
+        }
+
+        public IReviewRepository ReviewRepository
+        {
+            get
+            {
+                if (_reviewRepository == null)
+                {
+                    _reviewRepository = new ReviewRepositroy(_context);
+                }
+                return _reviewRepository;
             }
         }
 
