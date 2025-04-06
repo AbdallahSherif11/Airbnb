@@ -38,14 +38,6 @@ namespace Airbnb.Service.Services.AccountServices
         public async Task<bool> RegisterAsync(UserRegisterDTO userRegisterDTO)
         {
             var user = _mapper.Map<ApplicationUser>(userRegisterDTO);
-            //var user = new ApplicationUser()
-            //{
-            //    UserName = userRegisterDTO.UserName,
-            //    Email = userRegisterDTO.Email,
-            //    FirstName = userRegisterDTO.FirstName,
-            //    LastName = userRegisterDTO.LastName,
-            //    DateOfBirth = UserRegisterDTO
-            //}
 
             var existingUser = await _userManager.FindByEmailAsync(userRegisterDTO.Email);
             if (existingUser != null)
@@ -54,10 +46,6 @@ namespace Airbnb.Service.Services.AccountServices
             IdentityResult r = _userManager.CreateAsync(user, userRegisterDTO.Password).Result;
 
             return r.Succeeded;
-            //if (!_userManager.FindByEmailAsync(userRegisterDTO.Email))
-            //{
-
-            //}
         }
 
         public async Task<string> LoginAsync(UserLoginDTO userLoginDTO)

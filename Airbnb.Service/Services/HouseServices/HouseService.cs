@@ -215,7 +215,35 @@ namespace Airbnb.Service.Services.HouseServices
             await _unitOfWork.CompleteSaveAsync();
         }
 
+        public async Task UpdateHouseAmenitiesAsync(UpdateHouseAmenityDTO updateHouseAmenityDTO)
+        {
+            var house = await _unitOfWork.HouseRepository.GetAsync(updateHouseAmenityDTO.HouseId);
+            if (house == null)
+            {
+                throw new KeyNotFoundException("House not found");
+            }
 
+            // Remove existing amenities
+            var existingAmenities = await _unitOfWork.HouseAmenityRepository.GetAllAsync();
+            var houseAmenities = existingAmenities.Where(ha => ha.HouseId == updateHouseAmenityDTO.HouseId).ToList();
+            foreach (var houseAmenity in houseAmenities)
+            {
+                await _unitOfWork.HouseAmenityRepository.DeleteAsync(houseAmenity.HouseId, houseAmenity.AmenityId);
+            }
+
+            // Add new amenities
+            foreach (var amenityId in updateHouseAmenityDTO.AmenityIds)
+            {
+                var houseAmenity = new HouseAmenity
+                {
+                    HouseId = updateHouseAmenityDTO.HouseId,
+                    AmenityId = amenityId
+                };
+                await _unitOfWork.HouseAmenityRepository.AddAsync(houseAmenity);
+            }
+
+            await _unitOfWork.CompleteSaveAsync();
+        }
         #endregion
 
     }

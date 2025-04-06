@@ -10,9 +10,9 @@ namespace Airbnb.Core.Repositories.Contract
     public interface IHouseAmenityRepository
     {
         Task<IEnumerable<HouseAmenity>> GetAllAsync();
-        Task<HouseAmenity> GetAsync(int id);
+        Task<HouseAmenity> GetAsync(int houseId, int amenityId);
         Task AddAsync(HouseAmenity houseAmenity);
         void Update(HouseAmenity houseAmenity);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int houseId, int amenityId);
     }
 }

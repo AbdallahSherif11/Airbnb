@@ -31,6 +31,7 @@ namespace Airbnb.Core.Services.Contract.HouseServices.Contract
         Task UpdateHouseLocation(int houseId, UpdateHouseLocationDTO updateHouseLocationDTO);
         Task UpdateHouseAvailability(int houseId, UpdateHouseAvailabilityDTO updateHouseAvailabilityDTO);
         Task UpdateHouseImages(int houseId, List<IFormFile> images);
+        Task UpdateHouseAmenitiesAsync(UpdateHouseAmenityDTO updateHouseAmenityDTO);
         #endregion
     }
 }

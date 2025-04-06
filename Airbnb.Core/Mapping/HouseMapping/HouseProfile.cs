@@ -24,11 +24,11 @@ namespace Airbnb.Core.Mapping.HouseMapping
             .ForMember(dest => dest.Bookings, opt => opt.Ignore())
             .AfterMap((src, dest) =>
             {
-                dest.Images = src.Images?.Select(i => i.Url).ToList() ?? new List<string>();
+                dest.Images = src.Images?.Where(i=> i.IsDeleted == false).Select(i => i.Url).ToList() ?? new List<string>();
                 dest.HostName = src.ApplicationUser?.FirstName ?? string.Empty;
-                dest.Amenities = src.HouseAmenities?.Select(ha => ha.Amenity.Name).ToList() ?? new List<string>();
+                dest.Amenities = src.HouseAmenities?.Where(a=> a.IsDeleted == false).Select(ha => ha.Amenity.Name).ToList() ?? new List<string>();
 
-                dest.Reviews = src.Reviews?.Select(r => new ReadReviewDTO
+                dest.Reviews = src.Reviews?.Where(r=> r.IsDeleted== false).Select(r => new ReadReviewDTO
                 {
                     ReviewerName = r.ApplicationUser?.FirstName ?? "",
                     Comment = r.Comment,
@@ -48,21 +48,6 @@ namespace Airbnb.Core.Mapping.HouseMapping
             {
 
             }).ReverseMap();
-
-            //CreateMap<House, CreateHouseDTO>().AfterMap((src, dest) =>
-            //{
-            //    dest.CHouseAmenities = src.HouseAmenities.Select(ha => new CreateHouseAmenityDTO
-            //    {
-            //        AmenityId = ha.AmenityId
-            //    }).ToList();
-            //}).ReverseMap().AfterMap((src, dest) =>
-            //{
-            //    dest.HouseAmenities = src.CHouseAmenities.Select(ha => new HouseAmenity
-            //    {
-            //        AmenityId = ha.AmenityId,
-            //        HouseId = dest.HouseId
-            //    }).ToList();
-            //});
 
 
             CreateMap<House, UpdateHouseDTO>().AfterMap((src, dest) =>
