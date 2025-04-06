@@ -23,9 +23,10 @@ namespace Airbnb.Repository.Repositories
             return await _context.HouseAmenities.Where(a => a.IsDeleted == false).ToListAsync();
         }
 
-        public async Task<HouseAmenity> GetAsync(int id)
+        public async Task<HouseAmenity> GetAsync(int houseId, int amenityId)
         {
-            return await _context.HouseAmenities.FindAsync(id);
+            return await _context.HouseAmenities.FindAsync(houseId, amenityId);
+
         }
 
         public async Task AddAsync(HouseAmenity houseAmenity)
@@ -38,14 +39,14 @@ namespace Airbnb.Repository.Repositories
             _context.Entry(houseAmenity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int houseId, int amenityId)
         {
-            HouseAmenity ha = await GetAsync(id);
+            HouseAmenity ha = await GetAsync(houseId, amenityId);
             if (ha != null)
             {
                 ha.IsDeleted = true;
             }
         }
-                
+
     }
 }

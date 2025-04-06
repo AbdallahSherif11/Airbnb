@@ -17,6 +17,7 @@ namespace Airbnb.Repository.Repositories.UnitOfWorks
         private IAmenityRepository _amenityRepository;
         private IHouseAmenityRepository _houseAmenityRepository;
         private IReviewRepository _reviewRepository;
+        private IBookingRepository _bookingRepository;
 
         public UnitOfWork(AirbnbDbContext context)
         {
@@ -68,6 +69,18 @@ namespace Airbnb.Repository.Repositories.UnitOfWorks
                     _reviewRepository = new ReviewRepositroy(_context);
                 }
                 return _reviewRepository;
+            }
+        }
+
+        public IBookingRepository BookingRepository
+        {
+            get
+            {
+                if (_bookingRepository == null)
+                {
+                    _bookingRepository = new BookingRepository(_context);
+                }
+                return _bookingRepository;
             }
         }
 

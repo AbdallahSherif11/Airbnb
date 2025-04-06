@@ -22,7 +22,6 @@ namespace Airbnb.API.Controllers
 
         // GET: api/house
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<ReadHouseDTO>>> GetAllHouses()
         {
             var houses = await _houseService.GetAllHousesAsync();
@@ -112,20 +111,8 @@ namespace Airbnb.API.Controllers
 
 
         #region Update House Region
-        // PUT: api/house/5
-        //[HttpPut("{id}")]
-        //public async Task<ActionResult> UpdateHouse(int id, [FromBody] House house)
-        //{
-        //    if (id != house.HouseId)
-        //    {
-        //        return BadRequest("House ID mismatch.");
-        //    }
-        //    await _houseService.UpdateHouseAsync(house);
-        //    return NoContent();
-        //}
 
         [HttpPut("title")]
-        
         public async Task<ActionResult> UpdateHouseTitle(int Houseid, [FromBody] string Title)
         {
             if (Houseid != null && Title != null)
@@ -235,13 +222,21 @@ namespace Airbnb.API.Controllers
             }
         }
 
+        [HttpPut("amenities")]
+        public async Task<ActionResult> UpdateHouseAmenities([FromBody] UpdateHouseAmenityDTO updateHouseAmenityDTO)
+        {
+            if (updateHouseAmenityDTO == null)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            await _houseService.UpdateHouseAmenitiesAsync(updateHouseAmenityDTO);
+            return NoContent();
+        }
+
         #endregion
 
-        //[HttpGet("Reviewww")]
-        //public async Task<IActionResult> getAllReviews()
-        //{
 
-        //}
 
     }
 }
