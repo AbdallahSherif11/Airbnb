@@ -11,10 +11,16 @@ namespace Airbnb.Core.Entities.Models
         public int PaymentId { get; set; }
         public int BookingId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string PaymentMethod { get; set; }
-        public string PaymentCode { get; set; }
-        public decimal TotalPrice { get; set; }
+
+
+
+        public string PaymentMethod { get; set; } = "Stripe";
+        public string StripeSessionId { get; set; }
+        public string? StripePaymentIntentId { get; set; }
         public bool Status { get; set; }
+
+
+        public decimal TotalPrice { get; set; }
         public bool IsDeleted { get; set; }
         public virtual Booking Booking { get; set; } 
     }

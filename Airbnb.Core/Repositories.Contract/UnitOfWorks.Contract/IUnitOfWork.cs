@@ -13,6 +13,7 @@ namespace Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract
         public IHouseAmenityRepository HouseAmenityRepository { get; }
         public IReviewRepository ReviewRepository{ get; }
         public IBookingRepository BookingRepository{ get; }
+        public IPaymentRepository PaymentRepository{ get; }
 
         Task<int> CompleteSaveAsync();
 

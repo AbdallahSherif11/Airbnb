@@ -22,9 +22,9 @@ namespace Airbnb.Repository.Data.Configurations
                    .IsRequired()
                    .HasMaxLength(50);
 
-            builder.Property(p => p.PaymentCode)
-                   .IsRequired()
-                   .HasMaxLength(100);
+            //builder.Property(p => p.PaymentCode)
+            //       .IsRequired()
+            //       .HasMaxLength(100);
 
             builder.Property(p => p.TotalPrice)
                    .IsRequired()

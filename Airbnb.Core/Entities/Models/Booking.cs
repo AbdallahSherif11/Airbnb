@@ -16,8 +16,11 @@ namespace Airbnb.Core.Entities.Models
         public DateOnly CheckInDate { get; set; }
         public DateOnly CheckOutDate { get; set; }
         public decimal TotalPrice { get; set; }
-        public string PaymentMethod { get; set; }
+        public string PaymentMethod { get; set; } = "Stripe";
         public bool IsDeleted { get; set; }
+
+        public int? PaymentId { get; set; }
+
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual House House { get; set; }
         public virtual Review Review { get; set; }

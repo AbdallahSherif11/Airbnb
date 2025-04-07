@@ -3,6 +3,8 @@ using Airbnb.Core.Entities.Identity;
 using Airbnb.Core.Entities.Models;
 using Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract;
 using Airbnb.Core.Services.Contract.BookingServices.Contract;
+using Airbnb.Core.Services.Contract.PaymentServices.Contract;
+using Airbnb.Service.Services.PaymentServices;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Client;
@@ -19,12 +21,15 @@ namespace Airbnb.Service.Services.BookingServices
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly StripeService _stripeService;
 
+        //public BookingService(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IMapper mapper, StripeService stripeService)
         public BookingService(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _mapper = mapper;
+            //_stripeService = stripeService;
         }
 
         public async Task<ReadBookingDTO> CreateBookingAsync(CreateBookingDTO dto, string userId)
