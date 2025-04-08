@@ -8,6 +8,7 @@ using Airbnb.Core.Services.Contract.BookingServices.Contract;
 using Airbnb.Core.Services.Contract.HouseServices.Contract;
 using Airbnb.Core.Services.Contract.IdentityServices.Contract;
 using Airbnb.Core.Services.Contract.PaymentServices.Contract;
+using Airbnb.Core.Services.Contract.MessageService.Contract;
 using Airbnb.Core.Services.Contract.Review.Contract;
 using Airbnb.Repository.Data.Contexts;
 using Airbnb.Repository.Repositories;
@@ -16,10 +17,13 @@ using Airbnb.Service.Services.AccountServices;
 using Airbnb.Service.Services.BookingServices;
 using Airbnb.Service.Services.HouseServices;
 using Airbnb.Service.Services.PaymentServices;
+using Airbnb.Service.Services.MessageService;
 using Airbnb.Service.Services.ReviewServices;
+using Airbnb.Service.Services.SignalRServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -37,6 +41,10 @@ namespace Airbnb.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            //for signalR
+            builder.Services.AddSignalR();
+            builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -72,6 +80,7 @@ namespace Airbnb.API
             builder.Services.AddScoped<IStripeService, StripeService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
 
+            builder.Services.AddScoped<IMessageService, MessageService>();
             builder.Services.AddHttpContextAccessor(); // For accessing wwwroot
 
             //JWT Validation
@@ -94,6 +103,20 @@ namespace Airbnb.API
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
                     ClockSkew = TimeSpan.Zero
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chathub"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
@@ -119,6 +142,8 @@ namespace Airbnb.API
             app.UseStaticFiles(); // Serves files from wwwroot
 
             app.MapControllers();
+
+            app.MapHub<ChatHub>("/chathub");
 
             app.Run();
         }
