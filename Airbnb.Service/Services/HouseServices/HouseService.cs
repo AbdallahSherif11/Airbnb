@@ -40,13 +40,13 @@ namespace Airbnb.Service.Services.HouseServices
             return _mapper.Map<ReadHouseDTO>(house);
         }
 
-        public async Task AddHouseAsync(CreateHouseDTO createHouseDTO, List<CreateHouseAmenityDTO> createHouseAmenityDTO, List<IFormFile> images)
+        public async Task AddHouseAsync(CreateHouseDTO createHouseDTO)
         {
             var house = _mapper.Map<House>(createHouseDTO);
             await _unitOfWork.HouseRepository.AddAsync(house);
             await _unitOfWork.CompleteSaveAsync();
 
-            foreach (var image in images)
+            foreach (var image in createHouseDTO.ImagesList)
             {
                 var imagePath = await _imageService.SaveHouseImageAsync(image, house.HouseId);
                 var imageEntity = new Image
@@ -57,11 +57,11 @@ namespace Airbnb.Service.Services.HouseServices
                 await _unitOfWork.HouseRepository.AddImageAsync(house.HouseId, imageEntity);
             }
 
-            foreach (var x in createHouseAmenityDTO)
+            foreach (var x in createHouseDTO.AmenitiesList)
             {
                 var houseAmenityEntity = new HouseAmenity
                 {
-                    AmenityId = x.AmenityId,
+                    AmenityId = x,
                     HouseId = house.HouseId,
                 };
                 await _unitOfWork.HouseAmenityRepository.AddAsync(houseAmenityEntity);
@@ -70,7 +70,7 @@ namespace Airbnb.Service.Services.HouseServices
             await _unitOfWork.CompleteSaveAsync();
         }
 
-        
+
 
         public async Task DeleteHouseAsync(int houseId)
         {
@@ -215,6 +215,36 @@ namespace Airbnb.Service.Services.HouseServices
             await _unitOfWork.CompleteSaveAsync();
         }
 
+        //public async Task UpdateHouseAmenitiesAsync(UpdateHouseAmenityDTO updateHouseAmenityDTO)
+        //{
+        //    var house = await _unitOfWork.HouseRepository.GetAsync(updateHouseAmenityDTO.HouseId);
+        //    if (house == null)
+        //    {
+        //        throw new KeyNotFoundException("House not found");
+        //    }
+
+        //    // Remove existing amenities
+        //    var existingAmenities = await _unitOfWork.HouseAmenityRepository.GetAllAsync();
+        //    var houseAmenities = existingAmenities.Where(ha => ha.HouseId == updateHouseAmenityDTO.HouseId).ToList();
+        //    foreach (var houseAmenity in houseAmenities)
+        //    {
+        //        await _unitOfWork.HouseAmenityRepository.DeleteAsync(houseAmenity.HouseId, houseAmenity.AmenityId);
+        //    }
+
+        //    // Add new amenities
+        //    foreach (var amenityId in updateHouseAmenityDTO.AmenityIds)
+        //    {
+        //        var houseAmenity = new HouseAmenity
+        //        {
+        //            HouseId = updateHouseAmenityDTO.HouseId,
+        //            AmenityId = amenityId
+        //        };
+        //        await _unitOfWork.HouseAmenityRepository.AddAsync(houseAmenity);
+        //    }
+
+        //    await _unitOfWork.CompleteSaveAsync();
+        //}
+
         public async Task UpdateHouseAmenitiesAsync(UpdateHouseAmenityDTO updateHouseAmenityDTO)
         {
             var house = await _unitOfWork.HouseRepository.GetAsync(updateHouseAmenityDTO.HouseId);
@@ -223,27 +253,48 @@ namespace Airbnb.Service.Services.HouseServices
                 throw new KeyNotFoundException("House not found");
             }
 
-            // Remove existing amenities
-            var existingAmenities = await _unitOfWork.HouseAmenityRepository.GetAllAsync();
-            var houseAmenities = existingAmenities.Where(ha => ha.HouseId == updateHouseAmenityDTO.HouseId).ToList();
-            foreach (var houseAmenity in houseAmenities)
-            {
-                await _unitOfWork.HouseAmenityRepository.DeleteAsync(houseAmenity.HouseId, houseAmenity.AmenityId);
-            }
+            // Get current amenities (including soft-deleted ones)
+            var existingAmenities = await _unitOfWork.HouseAmenityRepository.GetAllForHouseAsync(updateHouseAmenityDTO.HouseId);
 
-            // Add new amenities
+            // Process amenities to add (those that don't exist or were previously deleted)
             foreach (var amenityId in updateHouseAmenityDTO.AmenityIds)
             {
-                var houseAmenity = new HouseAmenity
+                var existingAmenity = existingAmenities.FirstOrDefault(ha => ha.AmenityId == amenityId);
+
+                if (existingAmenity == null)
                 {
-                    HouseId = updateHouseAmenityDTO.HouseId,
-                    AmenityId = amenityId
-                };
-                await _unitOfWork.HouseAmenityRepository.AddAsync(houseAmenity);
+                    // Add new amenity
+                    var houseAmenity = new HouseAmenity
+                    {
+                        HouseId = updateHouseAmenityDTO.HouseId,
+                        AmenityId = amenityId,
+                        IsDeleted = false
+                    };
+                    await _unitOfWork.HouseAmenityRepository.AddAsync(houseAmenity);
+                }
+                else if (existingAmenity.IsDeleted)
+                {
+                    // Restore previously deleted amenity
+                    existingAmenity.IsDeleted = false;
+                    _unitOfWork.HouseAmenityRepository.Update(existingAmenity);
+                }
+                // If it exists and not deleted, no action needed
+            }
+
+            // Process amenities to remove (those not in the new list but exist in DB)
+            foreach (var existingAmenity in existingAmenities)
+            {
+                if (!updateHouseAmenityDTO.AmenityIds.Contains(existingAmenity.AmenityId)
+                    && !existingAmenity.IsDeleted)
+                {
+                    await _unitOfWork.HouseAmenityRepository.DeleteAsync(existingAmenity.HouseId, existingAmenity.AmenityId);
+                }
             }
 
             await _unitOfWork.CompleteSaveAsync();
         }
+
+
         #endregion
 
     }
