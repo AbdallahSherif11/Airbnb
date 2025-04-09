@@ -27,7 +27,7 @@ namespace Airbnb.Core.DTOs.HouseDTOs
         public string HouseView { get; set; }
         public int NumberOfRooms { get; set; }
         public int NumberOfBeds { get; set; }
-        //public List<IFormFile> Images { get; set; }
-        //public ICollection<CreateHouseAmenityDTO> CHouseAmenities { get; set; }
+        public List<IFormFile> ImagesList { get; set; }
+        public List<int> AmenitiesList { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Airbnb.Core.Entities.Models
     {
         public int PaymentId { get; set; }
         public int BookingId { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
 
 
