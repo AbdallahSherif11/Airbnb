@@ -16,7 +16,8 @@ namespace Airbnb.Repository.Data.Configurations
             builder.HasKey(p => p.PaymentId);
 
             builder.Property(p => p.CreatedAt)
-                   .IsRequired();
+                   .IsRequired()
+                   .HasDefaultValueSql("GetUTCDATE()");
 
             builder.Property(p => p.PaymentMethod)
                    .IsRequired()
