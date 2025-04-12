@@ -24,7 +24,7 @@ namespace Airbnb.Core.Mapping.HouseMapping
             .ForMember(dest => dest.Bookings, opt => opt.Ignore())
             .AfterMap((src, dest) =>
             {
-                dest.Images = src.Images?.Where(i=> i.IsDeleted == false).Select(i => i.Url).ToList() ?? new List<string>();
+                dest.Images = src.Images?.Where(i=> i.IsDeleted == false).Select(i => $"https://localhost:7015/{i.Url}").ToList() ?? new List<string>();
                 dest.HostName = src.ApplicationUser?.FirstName ?? string.Empty;
                 dest.Amenities = src.HouseAmenities?.Where(a=> a.IsDeleted == false).Select(ha => ha.Amenity.Name).ToList() ?? new List<string>();
 
