@@ -14,6 +14,7 @@ namespace Airbnb.Core.DTOs.AccountDTOs
         public string FirstName { get; set; }
         public string LastName { get; set; }
         //public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string? PhoneNumber { get; set; }
 
         public DateOnly DateOfBirth { get; set; }
         public string Address { get; set; }

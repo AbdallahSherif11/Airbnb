@@ -24,6 +24,11 @@ namespace Airbnb.Repository.Data.Configurations
             builder.Property(P => P.DateOfBirth)
                    .IsRequired();
 
+            builder.Property(u => u.PhoneNumber)
+               .IsRequired()
+               .HasMaxLength(14)
+               .HasAnnotation("MinLength", 11);
+
             builder.Property(P => P.CreatedAt)
                    .IsRequired()
                    .HasDefaultValueSql("GetUTCDATE()");
@@ -35,6 +40,9 @@ namespace Airbnb.Repository.Data.Configurations
             builder.Property(P => P.NationalId)
                    .IsRequired()
                    .HasMaxLength(14);
+
+            builder.HasIndex(P => P.NationalId)
+                   .IsUnique();
 
             builder.Property(P => P.IsAgreed)
                    .IsRequired();
