@@ -1,4 +1,5 @@
-﻿using Airbnb.Core.DTOs.HouseAmenityDTO;
+﻿using Airbnb.API.Errors;
+using Airbnb.Core.DTOs.HouseAmenityDTO;
 using Airbnb.Core.DTOs.HouseDTOs;
 using Airbnb.Core.Entities.Models;
 using Airbnb.Core.Services.Contract.HouseServices.Contract;
@@ -27,7 +28,7 @@ namespace Airbnb.API.Controllers
             var houses = await _houseService.GetAllHousesAsync();
             if(!houses.Any())
             {
-                return NotFound();
+                return NotFound(new ApiErrorResponse(404, "No houses found."));
             }
             else
             {
@@ -42,7 +43,7 @@ namespace Airbnb.API.Controllers
             var house = await _houseService.GetHouseByIdAsync(id);
             if (house == null)
             {
-                return NotFound();
+                return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
             }
             return Ok(house);
         }
@@ -86,7 +87,7 @@ namespace Airbnb.API.Controllers
         {
             if (createHouseDTO == null)
             {
-                return BadRequest("House data is invalid.");
+                return BadRequest(new ApiErrorResponse(400));
             }
             await _houseService.AddHouseAsync(createHouseDTO);
             return Ok();
@@ -101,7 +102,7 @@ namespace Airbnb.API.Controllers
             var house = await _houseService.GetHouseByIdAsync(id);
             if (house == null)
             {
-                return NotFound();
+                return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
             }
             await _houseService.DeleteHouseAsync(id);
             return NoContent();
@@ -118,7 +119,7 @@ namespace Airbnb.API.Controllers
             {
                 if (await _houseService.GetHouseByIdAsync(Houseid) == null)
                 {
-                    return NotFound();
+                    return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
                 await _houseService.UpdateHouseTitle(Houseid, Title);
                 return Ok("House Updated");
@@ -137,14 +138,14 @@ namespace Airbnb.API.Controllers
             {
                 if (await _houseService.GetHouseByIdAsync(Houseid) == null)
                 {
-                    return NotFound();
+                    return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
                 await _houseService.UpdateHouseDescription(Houseid, description);
                 return Ok("House Updated");
             }
             else
             {
-                return BadRequest();
+                return BadRequest(new ApiErrorResponse(400, "There was an error in the update. Please check it again."));
             }
         }
 
@@ -155,14 +156,14 @@ namespace Airbnb.API.Controllers
             {
                 if (await _houseService.GetHouseByIdAsync(Houseid) == null)
                 {
-                    return NotFound();
+                    return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
                 await _houseService.UpdateHousePricePerNight(Houseid, PricePerNight);
                 return Ok("House Updated");
             }
             else
             {
-                return BadRequest();
+                return BadRequest(new ApiErrorResponse(400, "There was an error in the update. Please check it again."));
             }
         }
 
@@ -173,14 +174,14 @@ namespace Airbnb.API.Controllers
             {
                 if (await _houseService.GetHouseByIdAsync(Houseid) == null)
                 {
-                    return NotFound();
+                    return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
                 await _houseService.UpdateHouseLocation(Houseid, updateHouseLocationDTO);
                 return Ok("House Updated");
             }
             else
             {
-                return BadRequest();
+                return BadRequest(new ApiErrorResponse(400, "There was an error in the update. Please check it again."));
             }
         }
 
@@ -191,14 +192,14 @@ namespace Airbnb.API.Controllers
             {
                 if (await _houseService.GetHouseByIdAsync(Houseid) == null)
                 {
-                    return NotFound();
+                    return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
                 await _houseService.UpdateHouseAvailability(Houseid, updateHouseAvailabilityDTO);
                 return Ok("House Updated");
             }
             else
             {
-                return BadRequest();
+                return BadRequest(new ApiErrorResponse(400, "There was an error in the update. Please check it again."));
             }
         }
 
@@ -210,14 +211,14 @@ namespace Airbnb.API.Controllers
             {
                 if (await _houseService.GetHouseByIdAsync(Houseid) == null)
                 {
-                    return NotFound();
+                    return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
                 await _houseService.UpdateHouseImages(Houseid, images);
                 return Ok("House Updated");
             }
             else
             {
-                return BadRequest();
+                return BadRequest(new ApiErrorResponse(400, "There was an error in the update. Please check it again."));
             }
         }
 
@@ -226,11 +227,11 @@ namespace Airbnb.API.Controllers
         {
             if (updateHouseAmenityDTO == null)
             {
-                return BadRequest("Invalid data.");
+                return BadRequest(new ApiErrorResponse(400, "There was an error in the update. Please check it again."));
             }
 
             await _houseService.UpdateHouseAmenitiesAsync(updateHouseAmenityDTO);
-            return NoContent();
+            return Ok("House Updated");
         }
 
         #endregion

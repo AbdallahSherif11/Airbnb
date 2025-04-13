@@ -1,4 +1,5 @@
-﻿using Airbnb.Core.DTOs.AccountDTOs;
+﻿using Airbnb.API.Errors;
+using Airbnb.Core.DTOs.AccountDTOs;
 using Airbnb.Core.Services.Contract.HouseServices.Contract;
 using Airbnb.Core.Services.Contract.IdentityServices.Contract;
 using Airbnb.Service.Services.AccountServices;
@@ -28,7 +29,7 @@ namespace Airbnb.API.Controllers
             }
             else
             {
-                return BadRequest();
+                return BadRequest(new ApiErrorResponse(400));
             }
         }
 
@@ -38,7 +39,7 @@ namespace Airbnb.API.Controllers
             var token = await _accountService.LoginAsync(userLoginDTO);
             if (string.IsNullOrEmpty(token))
             {
-                return Unauthorized("Invalid credentials");
+                return Unauthorized(new ApiErrorResponse(401));
             }
 
             return Ok(new { Token = token });

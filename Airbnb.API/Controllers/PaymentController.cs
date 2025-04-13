@@ -1,4 +1,5 @@
-﻿using Airbnb.Core.Services.Contract.PaymentServices.Contract;
+﻿using Airbnb.API.Errors;
+using Airbnb.Core.Services.Contract.PaymentServices.Contract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +32,7 @@ namespace Airbnb.API.Controllers
             var stripeSignature = Request.Headers["Stripe-Signature"];
 
             var result = await _paymentService.HandleStripeWebhookAsync(json, stripeSignature);
-            return result ? Ok() : BadRequest();
+            return result ? Ok() : BadRequest(new ApiErrorResponse(400));
         }
     }
 }
