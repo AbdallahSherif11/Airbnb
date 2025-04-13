@@ -31,6 +31,10 @@ using Stripe;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Airbnb.API.Errors;
+using Airbnb.API.Middleware;
 
 
 
@@ -95,6 +99,23 @@ namespace Airbnb.API
             builder.Services.AddScoped<IMessageService, MessageService>();
             builder.Services.AddHttpContextAccessor(); // For accessing wwwroot
 
+            // error validation handling
+            builder.Services.Configure<ApiBehaviorOptions>(option =>
+            {
+                option.InvalidModelStateResponseFactory = (actionContext) =>
+                {
+                    var errors = actionContext.ModelState.Where(e => e.Value.Errors.Count > 0)
+                                .SelectMany(x => x.Value.Errors)
+                                .Select(x => x.ErrorMessage)
+                                .ToArray();
+                    var response = new ApiValidationErrorResponse()
+                    {
+                        Errors = errors,
+                    };
+                    return new BadRequestObjectResult(response);
+                };
+            });
+
             //JWT Validation
 
             builder.Services.AddAuthentication(options =>
@@ -139,6 +160,9 @@ namespace Airbnb.API
 
             var app = builder.Build();
 
+            // Configure user-defined middleware
+            app.UseMiddleware<ExceptionMiddleware>();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -146,6 +170,8 @@ namespace Airbnb.API
                 app.UseSwaggerUI(op => op.SwaggerEndpoint("/openapi/v1.json", "v1"));
             }
 
+            //handel not found
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseHttpsRedirection();
 
             app.UseCors(MyAllowSpecificOrigins); 

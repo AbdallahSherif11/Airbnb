@@ -1,4 +1,5 @@
-﻿using Airbnb.Core.DTOs.BookingDTOs;
+﻿using Airbnb.API.Errors;
+using Airbnb.Core.DTOs.BookingDTOs;
 using Airbnb.Core.Services.Contract.BookingServices.Contract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace Airbnb.API.Controllers
         {
             var guestId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (guestId == null)
-                return Unauthorized();
+                return Unauthorized(new ApiErrorResponse(401));
 
             var result = await _bookingService.CreateBookingAsync(dto, guestId);
             return Ok(result);
