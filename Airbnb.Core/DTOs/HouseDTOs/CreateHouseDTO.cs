@@ -12,7 +12,7 @@ namespace Airbnb.Core.DTOs.HouseDTOs
 {
     public class CreateHouseDTO
     {
-        public string HostId { get; set; }
+        public string? HostId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal PricePerNight { get; set; }

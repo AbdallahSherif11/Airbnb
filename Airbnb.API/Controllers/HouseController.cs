@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using System.Security.Claims;
 
 namespace Airbnb.API.Controllers
 {
@@ -83,12 +85,22 @@ namespace Airbnb.API.Controllers
 
         // POST: api/house
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> AddHouse([FromForm] CreateHouseDTO createHouseDTO)
         {
+            var hostId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(hostId))
+            {
+                return Unauthorized(new ApiErrorResponse(401));
+            }
+
+            createHouseDTO.HostId = hostId;
+
             if (createHouseDTO == null)
             {
                 return BadRequest(new ApiErrorResponse(400));
             }
+
             await _houseService.AddHouseAsync(createHouseDTO);
             return Ok();
         }
