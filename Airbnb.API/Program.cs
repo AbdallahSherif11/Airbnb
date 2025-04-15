@@ -35,6 +35,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Airbnb.API.Errors;
 using Airbnb.API.Middleware;
+using Airbnb.Core.Services.Contract.WishListService.Contract;
+using Airbnb.Service.Services.WishListService;
 
 
 
@@ -90,6 +92,7 @@ namespace Airbnb.API
             builder.Services.AddScoped<IAccountService, Airbnb.Service.Services.AccountServices.AccountService>();
             builder.Services.AddScoped<IReviewService, Airbnb.Service.Services.ReviewServices.ReviewService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
+            builder.Services.AddScoped<IWishListService, WishListService>();
 
 
             // ...
