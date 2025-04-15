@@ -20,6 +20,7 @@ namespace Airbnb.Repository.Repositories.UnitOfWorks
         private IBookingRepository _bookingRepository;
         private IMessageRepository _messageRepository;
         private IPaymentRepository _paymentRepository;
+        private IWishListRepository _wishListRepository;
 
         public UnitOfWork(AirbnbDbContext context)
         {
@@ -106,6 +107,18 @@ namespace Airbnb.Repository.Repositories.UnitOfWorks
                     _paymentRepository = new PaymentRepository(_context);
                 }
                 return _paymentRepository;
+            }
+        }
+
+        public IWishListRepository WishListRepository
+        {
+            get
+            {
+                if (_wishListRepository == null)
+                {
+                    _wishListRepository = new WishListRepository(_context);
+                }
+                return _wishListRepository;
             }
         }
 
