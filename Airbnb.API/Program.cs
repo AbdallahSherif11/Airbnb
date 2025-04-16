@@ -67,7 +67,47 @@ namespace Airbnb.API
             // Add services to the container.
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            //builder.Services.AddOpenApi();
+
+            // Replace builder.Services.AddOpenApi() with:
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Airbnb API", Version = "v1" });
+
+                // Add JWT Bearer authentication to Swagger
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+
+                // Handle circular references
+                c.UseAllOfToExtendReferenceSchemas();
+                c.UseAllOfForInheritance();
+                c.UseOneOfForPolymorphism();
+
+                // Custom schema ID to avoid conflicts
+                c.CustomSchemaIds(type => type.FullName);
+            });
+
 
             // Add DbContext
             builder.Services.AddDbContext<AirbnbDbContext>(options =>
@@ -169,8 +209,14 @@ namespace Airbnb.API
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
-                app.UseSwaggerUI(op => op.SwaggerEndpoint("/openapi/v1.json", "v1"));
+                //app.MapOpenApi();
+                //app.UseSwaggerUI(op => op.SwaggerEndpoint("/openapi/v1.json", "v1"));
+
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Airbnb API V1");
+                });
             }
 
             //handel not found

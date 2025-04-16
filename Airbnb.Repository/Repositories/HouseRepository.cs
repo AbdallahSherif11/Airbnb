@@ -60,6 +60,11 @@ namespace Airbnb.Repository.Repositories
             return await _context.Houses.Where(H => H.IsDeleted == false && H.City == city).ToListAsync();
         }
 
+        public async Task<IEnumerable<House>> GetHousesByViewAsync(string view)
+        {
+            return await _context.Houses.Where(H => H.IsDeleted == false && H.HouseView == view).ToListAsync();
+        }
+
         public async Task<IEnumerable<House>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice)
         {
             return await _context.Houses

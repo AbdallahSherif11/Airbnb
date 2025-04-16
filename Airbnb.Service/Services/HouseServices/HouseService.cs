@@ -90,6 +90,12 @@ namespace Airbnb.Service.Services.HouseServices
             return _mapper.Map<IEnumerable<ReadHouseDTO>>(houses);
         }
 
+        public async Task<IEnumerable<ReadHouseDTO>> GetHousesByViewAsync(string view)
+        {
+            var houses = await _unitOfWork.HouseRepository.GetHousesByViewAsync(view);
+            return _mapper.Map<IEnumerable<ReadHouseDTO>>(houses);
+        }
+
         public async Task<IEnumerable<ReadHouseDTO>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice)
         {
             var houses = await _unitOfWork.HouseRepository.GetHousesByPriceRangeAsync(minPrice, maxPrice);
