@@ -21,6 +21,7 @@ namespace Airbnb.Core.Repositories.Contract
         Task DeleteImageAsync(int imageId);
 
         Task<IEnumerable<House>>  GetHousesByCityAsync(string city);
+        Task<IEnumerable<House>> GetHousesByViewAsync(string view);
         Task<IEnumerable<House>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice);
         Task<IEnumerable<House>> GetAvailableHousesAsync();
         Task<IEnumerable<House>> SearchHousesAsync(string keyword);

@@ -66,6 +66,14 @@ namespace Airbnb.API.Controllers
             return Ok(houses);
         }
 
+        [HttpGet("view/{viewName}")]
+        public async Task<ActionResult<IEnumerable<House>>> GetHousesByView(string viewName)
+        {
+            var houses = await _houseService.GetHousesByViewAsync(viewName);
+            return Ok(houses);
+        }
+
+
         // GET: api/house/price?minPrice=100&maxPrice=500
         [HttpGet("price")]
         public async Task<ActionResult<IEnumerable<House>>> GetHousesByPriceRange([FromQuery] decimal minPrice, [FromQuery] decimal maxPrice)
