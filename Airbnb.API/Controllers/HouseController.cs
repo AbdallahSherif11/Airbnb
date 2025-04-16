@@ -50,6 +50,25 @@ namespace Airbnb.API.Controllers
             return Ok(house);
         }
 
+        [Authorize]
+        [HttpGet("my-houses")]
+        public async Task<IActionResult> GetMyHouses()
+        {
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized(new ApiErrorResponse(401, "User is not authorized."));
+
+                var houses = await _houseService.GetHousesByHostAsync(userId);
+                return Ok(houses);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiErrorResponse(400, ex.Message));
+            }
+        }
+
         // GET: api/house/available
         [HttpGet("available")]
         public async Task<ActionResult<IEnumerable<House>>> GetAvailableHouses()

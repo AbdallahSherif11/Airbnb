@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace Airbnb.Core.Repositories.Contract
     public interface IHouseRepository 
     {
         Task<IEnumerable<House>> GetAllAsync();
+        Task<IEnumerable<House>> GetHousesByConditionAsync(Expression<Func<House, bool>> predicate);
         Task<House> GetAsync(int id);
         Task AddAsync(House house);
         void Update(House house);
