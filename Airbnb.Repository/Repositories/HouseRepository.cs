@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,11 @@ namespace Airbnb.Repository.Repositories
         public async Task<IEnumerable<House>> GetAllAsync()
         {
             return await _context.Houses.Where(p=> p.IsDeleted == false).ToListAsync();
+        }
+
+        public async Task<IEnumerable<House>> GetHousesByConditionAsync(Expression<Func<House, bool>> predicate)
+        {
+            return await _context.Houses.Where(predicate).ToListAsync();
         }
 
         public async Task<House> GetAsync(int id)
