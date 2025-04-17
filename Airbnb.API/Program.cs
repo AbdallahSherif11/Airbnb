@@ -37,6 +37,7 @@ using Airbnb.API.Errors;
 using Airbnb.API.Middleware;
 using Airbnb.Core.Services.Contract.WishListService.Contract;
 using Airbnb.Service.Services.WishListService;
+using Airbnb.Core.Services.Contract.AccountServices.Contract;
 
 
 
@@ -122,7 +123,7 @@ namespace Airbnb.API
 
             // DIC
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(typeof(HouseProfile), typeof(AccountProfile));
+            builder.Services.AddAutoMapper(typeof(HouseProfile), typeof(AccountProfile), typeof(UserMappingProfile));
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                             .AddEntityFrameworkStores<AirbnbDbContext>()
                             .AddDefaultTokenProviders();
@@ -133,12 +134,11 @@ namespace Airbnb.API
             builder.Services.AddScoped<IReviewService, Airbnb.Service.Services.ReviewServices.ReviewService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
             builder.Services.AddScoped<IWishListService, WishListService>();
-
+            builder.Services.AddScoped<IImageUserService, UserImageService>();
 
             // ...
             builder.Services.AddScoped<IStripeService, StripeService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
-
             builder.Services.AddScoped<IMessageService, MessageService>();
             builder.Services.AddHttpContextAccessor(); // For accessing wwwroot
 

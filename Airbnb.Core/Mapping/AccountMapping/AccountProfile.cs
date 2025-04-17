@@ -23,7 +23,7 @@ namespace Airbnb.Core.Mapping.AccountMapping
             CreateMap<UserRegisterDTO, ApplicationUser>().ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                                                          .AfterMap((src, dest) =>
                                                          {
-            
+
                                                          })
                                                          .ReverseMap();
                                                          }
