@@ -15,9 +15,9 @@ namespace Airbnb.Core.Mapping.AccountMapping
         {
             CreateMap<ApplicationUser, ReadUserDTO>()
                 .ForMember(dest => dest.ProfilePictureUrl, opt => opt.MapFrom(src =>
-                    string.IsNullOrEmpty(src.ProfilePictureUrl) ?
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2TgOv9CMmsUzYKCcLGWPvqcpUk6HXp2mnww&s" :
-                    $"https://localhost:7015{src.ProfilePictureUrl}"));
+                    string.IsNullOrEmpty(src.ProfilePictureUrl)
+                        ? "https://localhost:7015/images/users/default/default-profile.png"
+                        : $"https://localhost:7015{src.ProfilePictureUrl}"));
         }
     }
 }

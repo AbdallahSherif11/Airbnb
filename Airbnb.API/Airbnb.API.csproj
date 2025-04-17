@@ -22,8 +22,4 @@
     <ProjectReference Include="..\Airbnb.Service\Airbnb.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="WWWroot\" />
-  </ItemGroup>
-
 </Project>

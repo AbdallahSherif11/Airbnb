@@ -17,7 +17,7 @@ namespace Airbnb.Core.Entities.Identity
         public DateOnly DateOfBirth { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Address { get; set; }
-        public string ProfilePictureUrl { get; set; } = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2TgOv9CMmsUzYKCcLGWPvqcpUk6HXp2mnww&s";
+        public string ProfilePictureUrl { get; set; } = "/images/users/default/default-profile.png";
         public string NationalId { get; set; }
         public bool IsAgreed { get; set; }
         public bool IsDeleted { get; set; }

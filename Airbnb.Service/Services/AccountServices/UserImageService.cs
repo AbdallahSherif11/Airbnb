@@ -13,7 +13,7 @@ namespace Airbnb.Service.Services.AccountServices
     {
         private readonly IWebHostEnvironment _env;
         private const string UserImageFolder = "images/users";
-
+        private const string DefaultImagePath = "images/users/default/default-profile.png";
         public UserImageService(IWebHostEnvironment env)
         {
             _env = env;
@@ -54,6 +54,10 @@ namespace Airbnb.Service.Services.AccountServices
             // Remove invalid characters from username to create a valid folder name
             var invalidChars = Path.GetInvalidFileNameChars();
             return string.Join("_", userName.Split(invalidChars));
+        }
+        public string GetDefaultProfilePictureUrl()
+        {
+            return $"/{DefaultImagePath}";
         }
     }
 }
