@@ -123,7 +123,7 @@ namespace Airbnb.API
 
             // DIC
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(typeof(HouseProfile), typeof(AccountProfile));
+            builder.Services.AddAutoMapper(typeof(HouseProfile), typeof(AccountProfile), typeof(UserMappingProfile));
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                             .AddEntityFrameworkStores<AirbnbDbContext>()
                             .AddDefaultTokenProviders();
@@ -139,7 +139,6 @@ namespace Airbnb.API
             // ...
             builder.Services.AddScoped<IStripeService, StripeService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
-
             builder.Services.AddScoped<IMessageService, MessageService>();
             builder.Services.AddHttpContextAccessor(); // For accessing wwwroot
 

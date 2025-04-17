@@ -94,7 +94,7 @@ namespace Airbnb.Service.Services.AccountServices
 
             // Delete old picture if it exists and isn't the default
             if (!string.IsNullOrEmpty(user.ProfilePictureUrl) &&
-                !user.ProfilePictureUrl.Equals("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2TgOv9CMmsUzYKCcLGWPvqcpUk6HXp2mnww&s"))
+                !user.ProfilePictureUrl.Equals("/images/users/default/default-profile.png"))
             {
                 await _imageUserService.DeleteUserImageAsync(user.ProfilePictureUrl);
             }
