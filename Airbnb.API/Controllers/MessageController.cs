@@ -52,7 +52,7 @@ namespace Airbnb.API.Controllers
         {
             await _messageService.SendMessageAsync(dto.SenderId, dto.ReceiverId, dto.MessageContent);
 
-            await _hubContext.Clients.User(dto.ReceiverId).SendAsync("ReceiveMessage", dto.SenderId, dto.MessageContent);
+            await _hubContext.Clients.User(dto.ReceiverId).SendAsync("ReceiveMessage", dto.SenderId, dto.MessageContent, DateTime.UtcNow);
 
             return Ok();
         }
@@ -60,7 +60,7 @@ namespace Airbnb.API.Controllers
         public async Task<IActionResult> GetMessages(string user1, string user2)
         {
             var messages = await _messageService.GetConversationAsync(user1, user2);
-            return Ok(messages.Select(m => m.MessageContent));
+            return Ok(messages.Select(m => new  { MessageContent = m.MessageContent, ReceiverId = m.ReceiverId, SenderId = m.SenderId, TimeStamp = m.TimeStamp }));
         }
     }
 

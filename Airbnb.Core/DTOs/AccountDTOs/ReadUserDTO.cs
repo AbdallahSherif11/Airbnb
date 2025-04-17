@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,20 +6,17 @@ using System.Threading.Tasks;
 
 namespace Airbnb.Core.DTOs.AccountDTOs
 {
-    public class UserRegisterDTO
+    public class ReadUserDTO
     {
+        public string Id { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        //public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public string? PhoneNumber { get; set; }
-
+        public string ProfilePictureUrl { get; set; }
         public DateOnly DateOfBirth { get; set; }
         public string Address { get; set; }
         public string NationalId { get; set; }
-        public string IsAgreed { get; set; }
-        
+        public DateTime CreatedAt { get; set; }
     }
 }

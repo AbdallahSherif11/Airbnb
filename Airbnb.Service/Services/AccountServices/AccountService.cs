@@ -1,10 +1,12 @@
 ﻿using Airbnb.Core.DTOs.AccountDTOs;
 using Airbnb.Core.Entities.Identity;
 using Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract;
+using Airbnb.Core.Services.Contract.AccountServices.Contract;
 using Airbnb.Core.Services.Contract.HouseServices.Contract;
 using Airbnb.Core.Services.Contract.IdentityServices.Contract;
 using AutoMapper;
 using Azure.Core;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
@@ -25,15 +27,15 @@ namespace Airbnb.Service.Services.AccountServices
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IImageUserService _imageUserService;
 
-
-        public AccountService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public AccountService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, IConfiguration configuration, IImageUserService imageUserService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _configuration = configuration;
-
+            _imageUserService = imageUserService;
         }
         public async Task<bool> RegisterAsync(UserRegisterDTO userRegisterDTO)
         {
@@ -82,6 +84,97 @@ namespace Airbnb.Service.Services.AccountServices
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        // Add a new method to update profile picture
+        public async Task<bool> UpdateProfilePictureAsync(string userId, IFormFile profilePicture)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            // Delete old picture if it exists and isn't the default
+            if (!string.IsNullOrEmpty(user.ProfilePictureUrl) &&
+                !user.ProfilePictureUrl.Equals("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2TgOv9CMmsUzYKCcLGWPvqcpUk6HXp2mnww&s"))
+            {
+                await _imageUserService.DeleteUserImageAsync(user.ProfilePictureUrl);
+            }
+
+            // Save new picture
+            user.ProfilePictureUrl = await _imageUserService.SaveUserImageAsync(
+                profilePicture,
+                user.UserName);
+
+            var result = await _userManager.UpdateAsync(user);
+            return result.Succeeded;
+        }
+
+        public async Task<ReadUserDTO> GetUserByIdAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
+
+            return _mapper.Map<ReadUserDTO>(user);
+        }
+
+        public async Task<ReadUserDTO> GetUserByUsernameAsync(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
+
+            return _mapper.Map<ReadUserDTO>(user);
+        }
+
+        public async Task<ReadUserDTO> GetCurrentUserAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) throw new KeyNotFoundException("User not found");
+
+            return _mapper.Map<ReadUserDTO>(user);
+        }
+
+        public async Task<bool> UpdateUserProfileAsync(string userId, UpdateUserProfileDTO updateDto)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            // Update properties
+            user.FirstName = updateDto.FirstName ?? user.FirstName;
+            user.LastName = updateDto.LastName ?? user.LastName;
+            user.Address = updateDto.Address ?? user.Address;
+            user.DateOfBirth = updateDto.DateOfBirth ?? user.DateOfBirth;
+
+            var result = await _userManager.UpdateAsync(user);
+            return result.Succeeded;
+        }
+
+        public async Task<bool> ChangePasswordAsync(string userId, ChangePasswordDTO changePasswordDto)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            var result = await _userManager.ChangePasswordAsync(
+                user,
+                changePasswordDto.CurrentPassword,
+                changePasswordDto.NewPassword);
+
+            return result.Succeeded;
+        }
+
+        public async Task<bool> DeleteAccountAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            // Soft delete
+            user.IsDeleted = true;
+            var result = await _userManager.UpdateAsync(user);
+
+            // Optional: Immediately sign out the user
+            // await _signInManager.SignOutAsync();
+
+            return result.Succeeded;
         }
     }
 }
