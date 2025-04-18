@@ -13,5 +13,7 @@ namespace Airbnb.Core.Repositories.Contract
         Task<bool> AnyAsync(Expression<Func<Booking, bool>> predicate);
         Task AddAsync(Booking booking);
         Task<Booking> GetByIdAsync(int id);
+        Task<IEnumerable<Booking>> GetBookingsByHostIdAsync(string hostId);
+        Task<IEnumerable<Booking>> GetBookingsByGuestIdAsync(string guestId);
     }
 }

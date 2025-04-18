@@ -88,5 +88,42 @@ namespace Airbnb.Service.Services.BookingServices
                 GuestName = $"{user.FirstName} {user.LastName}"
             };
         }
+
+
+        public async Task<IEnumerable<DetailedReadBookingDTO>> GetDetailedBookingsAsHostAsync(string hostId)
+        {
+            var bookings = await _unitOfWork.BookingRepository.GetBookingsByHostIdAsync(hostId);
+            return bookings.Select(b => new DetailedReadBookingDTO
+            {
+                BookingId = b.BookingId,
+                GuestName = $"{b.ApplicationUser.FirstName} {b.ApplicationUser.LastName}",
+                GuestEmail = b.ApplicationUser.Email,
+                HouseTitle = b.House.Title,
+                HouseAddress = $"{b.House.Street}, {b.House.City}, {b.House.Country}",
+                CheckInDate = b.CheckInDate,
+                CheckOutDate = b.CheckOutDate,
+                TotalPrice = b.TotalPrice,
+                PaymentMethod = b.PaymentMethod,
+                CreatedAt = b.CreatedAt
+            });
+        }
+
+        public async Task<IEnumerable<DetailedReadBookingDTO>> GetDetailedBookingsAsGuestAsync(string guestId)
+        {
+            var bookings = await _unitOfWork.BookingRepository.GetBookingsByGuestIdAsync(guestId);
+            return bookings.Select(b => new DetailedReadBookingDTO
+            {
+                BookingId = b.BookingId,
+                GuestName = $"{b.ApplicationUser.FirstName} {b.ApplicationUser.LastName}",
+                GuestEmail = b.ApplicationUser.Email,
+                HouseTitle = b.House.Title,
+                HouseAddress = $"{b.House.Street}, {b.House.City}, {b.House.Country}",
+                CheckInDate = b.CheckInDate,
+                CheckOutDate = b.CheckOutDate,
+                TotalPrice = b.TotalPrice,
+                PaymentMethod = b.PaymentMethod,
+                CreatedAt = b.CreatedAt
+            });
+        }
     }
 }

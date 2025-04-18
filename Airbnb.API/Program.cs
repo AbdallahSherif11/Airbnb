@@ -109,6 +109,8 @@ namespace Airbnb.API
                 c.CustomSchemaIds(type => type.FullName);
             });
 
+            //For Email confirmation
+            builder.Services.AddTransient<IEmailService, EmailService>();
 
             // Add DbContext
             builder.Services.AddDbContext<AirbnbDbContext>(options =>

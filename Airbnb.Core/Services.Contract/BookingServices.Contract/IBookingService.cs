@@ -10,5 +10,8 @@ namespace Airbnb.Core.Services.Contract.BookingServices.Contract
     public interface IBookingService
     {
         Task<ReadBookingDTO> CreateBookingAsync(CreateBookingDTO dto, string guestId);
+
+        Task<IEnumerable<DetailedReadBookingDTO>> GetDetailedBookingsAsHostAsync(string hostId);
+        Task<IEnumerable<DetailedReadBookingDTO>> GetDetailedBookingsAsGuestAsync(string guestId);
     }
 }
