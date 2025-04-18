@@ -119,5 +119,46 @@ namespace Airbnb.API.Controllers
             var result = await _accountService.DeleteAccountAsync(userId);
             return result ? Ok() : BadRequest("Failed to delete account");
         }
+
+
+
+
+
+
+
+
+        [HttpPost("register-with-confirmation")]
+        public async Task<IActionResult> RegisterWithConfirmation(UserRegisterDTO userRegisterDTO)
+        {
+            var result = await _accountService.RegisterAsync(userRegisterDTO, true);
+            return result ?
+                Ok(new { Message = "Registration successful. Please check your email for confirmation link." }) :
+                BadRequest(new ApiErrorResponse(400, "Registration failed"));
+        }
+
+        [HttpPost("login-with-confirmation")]
+        public async Task<IActionResult> LoginWithConfirmation(UserLoginDTO userLoginDTO)
+        {
+            try
+            {
+                var token = await _accountService.LoginAsync(userLoginDTO, true);
+                return string.IsNullOrEmpty(token) ?
+                    Unauthorized(new ApiErrorResponse(401)) :
+                    Ok(new { Token = token });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new ApiErrorResponse(401, ex.Message));
+            }
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string token)
+        {
+            var result = await _accountService.ConfirmEmailAsync(userId, token);
+            return result ?
+                Ok(new { Message = "Email confirmed successfully. You can now login." }) :
+                BadRequest(new ApiErrorResponse(400, "Invalid or expired confirmation link"));
+        }
     }
 }

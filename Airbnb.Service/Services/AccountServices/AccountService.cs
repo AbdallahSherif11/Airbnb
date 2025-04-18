@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,14 +29,18 @@ namespace Airbnb.Service.Services.AccountServices
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IImageUserService _imageUserService;
+        private readonly IEmailService _emailService;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, IConfiguration configuration, IImageUserService imageUserService)
+        public AccountService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, IConfiguration configuration, IImageUserService imageUserService, IEmailService emailService, SignInManager<ApplicationUser> signInManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _configuration = configuration;
             _imageUserService = imageUserService;
+            _emailService = emailService;
+            _signInManager = signInManager;
         }
         public async Task<bool> RegisterAsync(UserRegisterDTO userRegisterDTO)
         {
@@ -176,5 +181,57 @@ namespace Airbnb.Service.Services.AccountServices
 
             return result.Succeeded;
         }
+
+
+
+
+        //Email
+
+        public async Task<bool> RegisterAsync(UserRegisterDTO userRegisterDTO, bool requireEmailConfirmation = false)
+        {
+            var user = _mapper.Map<ApplicationUser>(userRegisterDTO);
+
+
+            var result = await _userManager.CreateAsync(user, userRegisterDTO.Password);
+
+            if (result.Succeeded && requireEmailConfirmation)
+            {
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = $"{_configuration["AppBaseUrl"]}/api/account/confirm-email?userId={user.Id}&token={WebUtility.UrlEncode(token)}";
+
+                var emailBody = $"Please confirm your email by <a href='{confirmationLink}'>clicking here</a>.";
+                await _emailService.SendEmailAsync(user.Email, "Confirm your email", emailBody);
+            }
+
+            return result.Succeeded;
+        }
+
+        public async Task<string> LoginAsync(UserLoginDTO userLoginDTO, bool requireConfirmedEmail = false)
+        {
+            var user = await _userManager.FindByEmailAsync(userLoginDTO.Email);
+            if (user == null) return null;
+
+            if (requireConfirmedEmail && !user.EmailConfirmed)
+            {
+                throw new UnauthorizedAccessException("Email not confirmed. Please check your email for confirmation link.");
+            }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, userLoginDTO.Password, false);
+            if (!result.Succeeded) return null;
+
+            return GenerateJwtToken(user);
+        }
+
+        public async Task<bool> ConfirmEmailAsync(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            return result.Succeeded;
+        }
+
+
+
     }
 }
