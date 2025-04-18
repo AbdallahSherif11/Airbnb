@@ -22,12 +22,14 @@ namespace Airbnb.Service.Services.ReviewServices
             _mapper = mapper;
         }
 
-        public async Task<List<ReadReviewDTO>> GetReviewsByHouseIdAsync(int houseId)
+        public async Task<List<DetailedReadReviewDTO>> GetReviewsByHouseIdAsync(int houseId)
         {
             var reviews = await _unitOfWork.ReviewRepository.GetReviewsByHouseIdAsync(houseId);
 
-            return reviews.Select(r => new ReadReviewDTO
+            return reviews.Select(r => new DetailedReadReviewDTO
             {
+                ReviewId=r.ReviewId,
+                BookingId = r.BookingId,
                 ReviewerName = r.ApplicationUser.FirstName,
                 Comment = r.Comment,
                 Rating = r.Rating

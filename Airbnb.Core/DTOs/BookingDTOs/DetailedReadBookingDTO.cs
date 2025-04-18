@@ -11,6 +11,9 @@ namespace Airbnb.Core.DTOs.BookingDTOs
         public int BookingId { get; set; }
         public string GuestName { get; set; }
         public string GuestEmail { get; set; }
+        public string GuestId { get; set; }
+
+        public int HouseId { get; set; }
         public string HouseTitle { get; set; }
         public string HouseAddress { get; set; }
         public DateOnly CheckInDate { get; set; }
