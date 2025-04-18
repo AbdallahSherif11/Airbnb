@@ -117,6 +117,8 @@ namespace Airbnb.Service.Services.BookingServices
                 GuestName = $"{b.ApplicationUser.FirstName} {b.ApplicationUser.LastName}",
                 GuestEmail = b.ApplicationUser.Email,
                 HouseTitle = b.House.Title,
+                GuestId =b.GuestId,
+                HouseId = b.HouseId,
                 HouseAddress = $"{b.House.Street}, {b.House.City}, {b.House.Country}",
                 CheckInDate = b.CheckInDate,
                 CheckOutDate = b.CheckOutDate,
