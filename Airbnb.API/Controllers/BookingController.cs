@@ -12,10 +12,12 @@ namespace Airbnb.API.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, IHttpContextAccessor httpContextAccessor)
         {
             _bookingService = bookingService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -29,6 +31,27 @@ namespace Airbnb.API.Controllers
 
             var result = await _bookingService.CreateBookingAsync(dto, guestId);
             return Ok(result);
+        }
+
+
+        [HttpGet("AsHost")]
+        public async Task<IActionResult> GetDetailedBookingsAsHost()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var bookings = await _bookingService.GetDetailedBookingsAsHostAsync(userId);
+            return Ok(bookings);
+        }
+
+        [HttpGet("AsGuest")]
+        public async Task<IActionResult> GetDetailedBookingsAsGuest()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var bookings = await _bookingService.GetDetailedBookingsAsGuestAsync(userId);
+            return Ok(bookings);
         }
     }
 }

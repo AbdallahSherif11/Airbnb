@@ -34,5 +34,21 @@ namespace Airbnb.Repository.Repositories
         {
             return await _context.Bookings.FirstOrDefaultAsync(b => b.BookingId == id && !b.IsDeleted);
         }
+
+        public async Task<IEnumerable<Booking>> GetBookingsByHostIdAsync(string hostId)
+        {
+            return await _context.Bookings
+                .Include(b => b.House)
+                .Where(b => b.House.HostId == hostId && !b.IsDeleted)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Booking>> GetBookingsByGuestIdAsync(string guestId)
+        {
+            return await _context.Bookings
+                .Include(b => b.House)
+                .Where(b => b.GuestId == guestId && !b.IsDeleted)
+                .ToListAsync();
+        }
     }
 }
