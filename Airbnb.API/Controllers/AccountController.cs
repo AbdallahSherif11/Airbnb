@@ -130,10 +130,21 @@ namespace Airbnb.API.Controllers
         [HttpPost("register-with-confirmation")]
         public async Task<IActionResult> RegisterWithConfirmation(UserRegisterDTO userRegisterDTO)
         {
-            var result = await _accountService.RegisterAsync(userRegisterDTO, true);
-            return result ?
-                Ok(new { Message = "Registration successful. Please check your email for confirmation link." }) :
-                BadRequest(new ApiErrorResponse(400, "Registration failed"));
+            try
+            {
+                var result = await _accountService.RegisterAsync(userRegisterDTO, true);
+                return result
+                    ? Ok(new { Message = "Registration successful. Please check your email for confirmation link." })
+                    : BadRequest(new ApiErrorResponse(400, "Registration failed"));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiErrorResponse(409, ex.Message)); // Return 409 Conflict for duplicate entries
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiErrorResponse(400, ex.Message));
+            }
         }
 
         [HttpPost("login-with-confirmation")]
