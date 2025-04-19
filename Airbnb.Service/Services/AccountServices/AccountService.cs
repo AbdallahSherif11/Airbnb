@@ -9,6 +9,7 @@ using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -189,12 +190,45 @@ namespace Airbnb.Service.Services.AccountServices
 
         public async Task<bool> RegisterAsync(UserRegisterDTO userRegisterDTO, bool requireEmailConfirmation = false)
         {
-            var user = _mapper.Map<ApplicationUser>(userRegisterDTO);
+            // Check if email already exists
+            if (await _userManager.FindByEmailAsync(userRegisterDTO.Email) != null)
+            {
+                throw new InvalidOperationException("Email already exists");
+            }
 
+            // Check if username already exists
+            if (await _userManager.FindByNameAsync(userRegisterDTO.UserName) != null)
+            {
+                throw new InvalidOperationException("Username already exists");
+            }
+
+            // Check if national ID already exists
+            if (await _userManager.Users.AnyAsync(u => u.NationalId == userRegisterDTO.NationalId))
+            {
+                throw new InvalidOperationException("National ID already exists");
+            }
+
+            var user = new ApplicationUser
+            {
+                UserName = userRegisterDTO.UserName,
+                Email = userRegisterDTO.Email,
+                FirstName = userRegisterDTO.FirstName,
+                LastName = userRegisterDTO.LastName,
+                DateOfBirth = userRegisterDTO.DateOfBirth,
+                Address = userRegisterDTO.Address,
+                PhoneNumber = userRegisterDTO.PhoneNumber,
+                NationalId = userRegisterDTO.NationalId,
+                IsAgreed = userRegisterDTO.IsAgreed == "True"
+            };
 
             var result = await _userManager.CreateAsync(user, userRegisterDTO.Password);
 
-            if (result.Succeeded && requireEmailConfirmation)
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException(string.Join(", ", result.Errors.Select(e => e.Description)));
+            }
+
+            if (requireEmailConfirmation)
             {
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = $"{_configuration["AppBaseUrl"]}/api/account/confirm-email?userId={user.Id}&token={WebUtility.UrlEncode(token)}";
@@ -203,7 +237,7 @@ namespace Airbnb.Service.Services.AccountServices
                 await _emailService.SendEmailAsync(user.Email, "Confirm your email", emailBody);
             }
 
-            return result.Succeeded;
+            return true;
         }
 
         public async Task<string> LoginAsync(UserLoginDTO userLoginDTO, bool requireConfirmedEmail = false)
