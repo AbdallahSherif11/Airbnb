@@ -30,7 +30,7 @@ namespace Airbnb.Core.DTOs.HouseDTOs
         public List<string> Images { get; set; }
         public List<string> Amenities { get; set; }
         public List<ReadReviewDTO> Reviews { get; set; }
-        public List<ReadBookingDTO> Bookings { get; set; }
+        public List<ReadBookingDTO> Bookings { get; set; } = new List<ReadBookingDTO>();
 
 
         public string HostName { get; set; }
