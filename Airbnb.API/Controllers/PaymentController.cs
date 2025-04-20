@@ -1,4 +1,5 @@
 ﻿using Airbnb.API.Errors;
+using Airbnb.Core.DTOs.PaymentDTOs;
 using Airbnb.Core.Services.Contract.PaymentServices.Contract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,26 @@ namespace Airbnb.API.Controllers
             _config = config;
         }
 
+        //[HttpPost("create-checkout-session")]
+        //public async Task<IActionResult> CreateCheckoutSession(int bookingId, decimal amount)
+        //{
+        //    var sessionUrl = await _paymentService.CreatePaymentSessionAsync(bookingId, amount);
+        //    return Ok(new { url = sessionUrl });
+        //}
+
         [HttpPost("create-checkout-session")]
-        public async Task<IActionResult> CreateCheckoutSession(int bookingId, decimal amount)
+        public async Task<IActionResult> CreateCheckoutSession([FromBody] CreateCheckoutSessionRequest request)
         {
-            var sessionUrl = await _paymentService.CreatePaymentSessionAsync(bookingId, amount);
-            return Ok(new { url = sessionUrl });
+            if (request == null || request.BookingId <= 0 || request.Amount <= 0)
+            {
+                return BadRequest("Invalid request parameters");
+            }
+
+            var (sessionId, sessionUrl) = await _paymentService.CreatePaymentSessionAsync(request.BookingId, request.Amount);
+            return Ok(new { 
+                url = sessionUrl,
+                SessionId = sessionId 
+            });
         }
 
         [HttpPost("webhook")]

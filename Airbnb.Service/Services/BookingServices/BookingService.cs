@@ -1,4 +1,5 @@
 ﻿using Airbnb.Core.DTOs.BookingDTOs;
+using Airbnb.Core.DTOs.PaymentDTOs;
 using Airbnb.Core.Entities.Identity;
 using Airbnb.Core.Entities.Models;
 using Airbnb.Core.Repositories.Contract.UnitOfWorks.Contract;
@@ -32,7 +33,7 @@ namespace Airbnb.Service.Services.BookingServices
             //_stripeService = stripeService;
         }
 
-        public async Task<ReadBookingDTO> CreateBookingAsync(CreateBookingDTO dto, string userId)
+        public async Task<ReadBookingForPaymentDTO> CreateBookingAsync(CreateBookingDTO dto, string userId)
         {
             // 1. Check if house exists
             var house = await _unitOfWork.HouseRepository.GetAsync(dto.HouseId);
@@ -81,10 +82,12 @@ namespace Airbnb.Service.Services.BookingServices
             await _unitOfWork.CompleteSaveAsync();
 
             // 6. Return DTO with guest name
-            return new ReadBookingDTO
+            return new ReadBookingForPaymentDTO
             {
-                CheckIn = booking.CheckInDate,
-                CheckOut = booking.CheckOutDate,
+                BookingId = booking.BookingId,
+                TotalPrice = totalPrice,
+                CheckInDate = booking.CheckInDate,
+                CheckOutDate = booking.CheckOutDate,
                 GuestName = $"{user.FirstName} {user.LastName}"
             };
         }

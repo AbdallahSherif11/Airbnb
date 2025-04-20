@@ -23,6 +23,7 @@ namespace Airbnb.Service.Services.PaymentServices
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
+                ExpiresAt = DateTime.UtcNow.AddHours(1),
                 LineItems = new List<SessionLineItemOptions>
                 {
                     new SessionLineItemOptions
@@ -40,8 +41,8 @@ namespace Airbnb.Service.Services.PaymentServices
                     }
                 },
                 Mode = "payment",
-                SuccessUrl = "https://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}",
-                CancelUrl = "https://localhost:3000/cancel",
+                SuccessUrl = _config["Stripe:SuccessUrl"], // Get from appsettings.json
+                CancelUrl = _config["Stripe:CancelUrl"],
                 Metadata = new Dictionary<string, string>
                 {
                     { "bookingId", bookingId.ToString() }
