@@ -74,6 +74,22 @@ namespace Airbnb.API.Controllers
                 return NotFound(ex.Message);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> GetUserById()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new ApiErrorResponse(401, "User is not authorized."));
+            try
+            {
+                var userDto = await _accountService.GetUserByIdAsync(userId);
+                return Ok(userDto);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
 
         [HttpGet("by-username/{username}")]
         [Authorize]

@@ -123,6 +123,8 @@ namespace Airbnb.Service.Services.AccountServices
             return _mapper.Map<ReadUserDTO>(user);
         }
 
+
+
         public async Task<ReadUserDTO> GetUserByUsernameAsync(string username)
         {
             var user = await _userManager.FindByNameAsync(username);
@@ -150,6 +152,7 @@ namespace Airbnb.Service.Services.AccountServices
             user.LastName = updateDto.LastName ?? user.LastName;
             user.Address = updateDto.Address ?? user.Address;
             user.DateOfBirth = updateDto.DateOfBirth ?? user.DateOfBirth;
+            
 
             var result = await _userManager.UpdateAsync(user);
             return result.Succeeded;
