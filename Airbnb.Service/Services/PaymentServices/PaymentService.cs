@@ -27,7 +27,7 @@ namespace Airbnb.Service.Services.PaymentServices
             _config = config;
         }
 
-        public async Task<string> CreatePaymentSessionAsync(int bookingId, decimal amount)
+        public async Task<(string sessionId, string url)> CreatePaymentSessionAsync(int bookingId, decimal amount)
         {
             var (sessionId, url) = await _stripeService.CreateCheckoutSessionAsync(amount, bookingId);
 
@@ -49,7 +49,7 @@ namespace Airbnb.Service.Services.PaymentServices
 
             await _unitOfWork.CompleteSaveAsync();
 
-            return url;
+            return (sessionId, url);
         }
 
         public async Task<bool> HandleStripeWebhookAsync(string json, string stripeSignature)

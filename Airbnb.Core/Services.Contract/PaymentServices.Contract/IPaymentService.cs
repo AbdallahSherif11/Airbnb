@@ -8,7 +8,9 @@ namespace Airbnb.Core.Services.Contract.PaymentServices.Contract
 {
     public interface IPaymentService
     {
-        Task<string> CreatePaymentSessionAsync(int bookingId, decimal amount);
+        Task<(string sessionId, string url)> CreatePaymentSessionAsync(int bookingId, decimal amount);
+
+        //Task<string> CreatePaymentSessionAsync(int bookingId, decimal amount);
         Task<bool> HandleStripeWebhookAsync(string json, string stripeSignature);
     }
 }
