@@ -38,6 +38,9 @@ using Airbnb.API.Middleware;
 using Airbnb.Core.Services.Contract.WishListService.Contract;
 using Airbnb.Service.Services.WishListService;
 using Airbnb.Core.Services.Contract.AccountServices.Contract;
+using Airbnb.Core.Services.Contract.SmartSearchService.Contract;
+using Airbnb.Service.Services.SearchService.Airbnb.Service.Services.SearchService;
+using Airbnb.Service.Services.SearchService;
 
 
 
@@ -143,6 +146,13 @@ namespace Airbnb.API
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<IMessageService, MessageService>();
             builder.Services.AddHttpContextAccessor(); // For accessing wwwroot
+
+
+
+            builder.Services.AddScoped<ISmartSearchService, SmartSearchService>();
+            builder.Services.AddHttpClient<IOllamaService, OllamaService>();
+
+
 
             // error validation handling
             builder.Services.Configure<ApiBehaviorOptions>(option =>
