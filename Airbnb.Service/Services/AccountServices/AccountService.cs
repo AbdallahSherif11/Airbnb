@@ -85,7 +85,7 @@ namespace Airbnb.Service.Services.AccountServices
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
+                expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: creds
             );
 
@@ -268,7 +268,16 @@ namespace Airbnb.Service.Services.AccountServices
             return result.Succeeded;
         }
 
+        public async Task<ReadUserDTO> GetUserByHostedHouse(int houseID)
+        {
+            var house = await _unitOfWork.HouseRepository.GetAsync(houseID);
+            var userId = house.HostId;
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
 
+            return _mapper.Map<ReadUserDTO>(user);
+        }
 
     }
 }
