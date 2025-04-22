@@ -27,5 +27,8 @@ namespace Airbnb.Core.Repositories.Contract
         Task<IEnumerable<House>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice);
         Task<IEnumerable<House>> GetAvailableHousesAsync();
         Task<IEnumerable<House>> SearchHousesAsync(string keyword);
+        IQueryable<House> GetQueryable();
+
+        IQueryable<House> GetQueryableWithIncludes();
     }
 }

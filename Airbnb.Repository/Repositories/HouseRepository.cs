@@ -119,5 +119,29 @@ namespace Airbnb.Repository.Repositories
                 _context.Images.Remove(image);
             }
         }
+
+
+        public IQueryable<House> GetQueryable()
+        {
+            return _context.Houses.Where(h => !h.IsDeleted);
+        }
+
+
+        public IQueryable<House> GetQueryableWithIncludes()
+        {
+            return _context.Houses
+                .Where(h => !h.IsDeleted)
+                .Include(h => h.Images)
+                .Include(h => h.HouseAmenities.Where(ha => !ha.IsDeleted))
+                    .ThenInclude(ha => ha.Amenity)
+                .Include(h => h.Reviews.Where(r => !r.IsDeleted))
+                .Include(h => h.Bookings)
+                .Include(h => h.ApplicationUser);
+        }
+
+
+
+
+
     }
 }
