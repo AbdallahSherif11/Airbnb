@@ -17,7 +17,8 @@ namespace Airbnb.Service.Services.SearchService
         public async Task<FilterResult> ExtractFiltersFromPromptAsync(string prompt)
         {
             var refinedPrompt =
-                    "Return a valid JSON object with the following structure, and nothing else:\n\n" +
+                    "Extract only the explicitly mentioned or clearly implied filters from the user query below. " +
+                    "Return a valid JSON object using the following structure, and nothing else:\n\n" +
                     "{\n" +
                     "  \"country\": string | null,\n" +
                     "  \"city\": string | null,\n" +
@@ -28,12 +29,13 @@ namespace Airbnb.Service.Services.SearchService
                     "  \"amenities\": string[] | null,\n" +
                     "  \"houseView\": string | null\n" +
                     "}\n\n" +
-                    "- Do not assume any value unless the query clearly hints it.\n" +
-                    "- Infer user preferences from indirect expressions (e.g., if the user mentions enjoying cooking, infer a preference for a kitchen).\n" +
-                    "- Identify implied amenities from the user’s wording, even if not explicitly listed.\n" +
-                    "- Correct obvious misspellings in locations.\n" +
-                    "- Output only the raw JSON—no comments, no markdown, no explanations.\n\n" +
+                    "- Do not assume or fabricate any value.\n" +
+                    "- You may infer the number of beds if the number of people is clearly stated or implied (e.g., \"me and my friend\" → beds: 2).\n" +
+                    "- If any field is not mentioned or implied, return null.\n" +
+                    "- Correct obvious spelling mistakes in country or city names.\n" +
+                    "- Return only raw JSON without any comments, formatting, or explanation.\n\n" +
                     $"Query: {prompt}";
+
 
 
 
