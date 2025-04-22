@@ -74,6 +74,22 @@ namespace Airbnb.API.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+
+        [HttpGet("getHost/{id}")]
+        public async Task<IActionResult> GetUserByHouseId(int id)
+        {
+            try
+            {
+                var userDto = await _accountService.GetUserByHostedHouse(id);
+                return Ok(userDto);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetUserById()
         {

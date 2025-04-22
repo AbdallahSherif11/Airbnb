@@ -21,6 +21,7 @@ namespace Airbnb.Core.Services.Contract.IdentityServices.Contract
         Task<bool> DeleteAccountAsync(string userId);
         Task<ReadUserDTO> GetCurrentUserAsync(string userId);
 
+        Task<ReadUserDTO> GetUserByHostedHouse(int houseID);
 
         Task<bool> RegisterAsync(UserRegisterDTO userRegisterDTO, bool requireEmailConfirmation = false);
         Task<string> LoginAsync(UserLoginDTO userLoginDTO, bool requireConfirmedEmail = false);
