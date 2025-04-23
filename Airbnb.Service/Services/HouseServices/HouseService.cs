@@ -154,7 +154,7 @@ namespace Airbnb.Service.Services.HouseServices
 
         public async Task UpdateHouseTitle(int houseId, string title)
         {
-            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+            var house = await _unitOfWork.HouseRepository.GetAsyncForUpdate(houseId);
 
             house.Title = title;
             _unitOfWork.HouseRepository.Update(house);
@@ -163,7 +163,7 @@ namespace Airbnb.Service.Services.HouseServices
 
         public async Task UpdateHouseDescription(int houseId, string description)
         {
-            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+            var house = await _unitOfWork.HouseRepository.GetAsyncForUpdate(houseId);
 
             house.Description = description;
             _unitOfWork.HouseRepository.Update(house);
@@ -172,7 +172,7 @@ namespace Airbnb.Service.Services.HouseServices
 
         public async Task UpdateHousePricePerNight(int houseId, decimal PricePerNight)
         {
-            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+            var house = await _unitOfWork.HouseRepository.GetAsyncForUpdate(houseId);
 
             house.PricePerNight = PricePerNight;
             _unitOfWork.HouseRepository.Update(house);
@@ -181,7 +181,7 @@ namespace Airbnb.Service.Services.HouseServices
 
         public async Task UpdateHouseLocation(int houseId, UpdateHouseLocationDTO updateHouseLocationDTO)
         {
-            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+            var house = await _unitOfWork.HouseRepository.GetAsyncForUpdate(houseId);
 
             house.Country = updateHouseLocationDTO.Country;
             house.City = updateHouseLocationDTO.City;
@@ -195,7 +195,7 @@ namespace Airbnb.Service.Services.HouseServices
 
         public async Task UpdateHouseAvailability(int houseId, UpdateHouseAvailabilityDTO updateHouseAvailabilityDTO)
         {
-            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+            var house = await _unitOfWork.HouseRepository.GetAsyncForUpdate(houseId);
 
             house.IsAvailable = updateHouseAvailabilityDTO.IsAvailable;
             house.MaxDays = updateHouseAvailabilityDTO.MaxDays;
@@ -210,7 +210,7 @@ namespace Airbnb.Service.Services.HouseServices
 
         public async Task UpdateHouseImages(int houseId, List<IFormFile> images)
         {
-            var house = await _unitOfWork.HouseRepository.GetAsync(houseId);
+            var house = await _unitOfWork.HouseRepository.GetAsyncForUpdate(houseId);
             
             foreach(var OldImage in house.Images)
             {
@@ -263,7 +263,7 @@ namespace Airbnb.Service.Services.HouseServices
 
         public async Task UpdateHouseAmenitiesAsync(UpdateHouseAmenityDTO updateHouseAmenityDTO)
         {
-            var house = await _unitOfWork.HouseRepository.GetAsync(updateHouseAmenityDTO.HouseId);
+            var house = await _unitOfWork.HouseRepository.GetAsyncForUpdate(updateHouseAmenityDTO.HouseId);
             if (house == null)
             {
                 throw new KeyNotFoundException("House not found");

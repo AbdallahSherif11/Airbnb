@@ -34,6 +34,11 @@ namespace Airbnb.Repository.Repositories
             return await _context.Houses.FirstOrDefaultAsync(H => H.HouseId == id && H.IsDeleted == false && H.IsAvailable == true);
         }
 
+        public async Task<House> GetAsyncForUpdate(int id)
+        {
+            return await _context.Houses.FirstOrDefaultAsync(H => H.HouseId == id && H.IsDeleted == false);
+        }
+
         public async Task AddAsync(House house)
         {
             await _context.Houses.AddAsync(house);
