@@ -47,7 +47,7 @@ namespace Airbnb.Service.Services.SearchService
                 stream = false
             };
 
-            var response = await _httpClient.PostAsJsonAsync("http://localhost:11434/api/generate", request);
+            var response = await _httpClient.PostAsJsonAsync("https://7233-197-54-31-93.ngrok-free.app/api/generate", request);
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
