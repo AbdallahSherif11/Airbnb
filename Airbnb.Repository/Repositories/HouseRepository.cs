@@ -20,7 +20,7 @@ namespace Airbnb.Repository.Repositories
         }
         public async Task<IEnumerable<House>> GetAllAsync()
         {
-            return await _context.Houses.Where(p=> p.IsDeleted == false).ToListAsync();
+            return await _context.Houses.Where(p=> p.IsDeleted == false && p.IsAvailable == true).ToListAsync();
         }
 
         public async Task<IEnumerable<House>> GetHousesByConditionAsync(Expression<Func<House, bool>> predicate)
@@ -31,7 +31,7 @@ namespace Airbnb.Repository.Repositories
         public async Task<House> GetAsync(int id)
         {
             //return await _context.Houses.FindAsync(id);
-            return await _context.Houses.FirstOrDefaultAsync(H => H.HouseId == id && H.IsDeleted == false);
+            return await _context.Houses.FirstOrDefaultAsync(H => H.HouseId == id && H.IsDeleted == false && H.IsAvailable == true);
         }
 
         public async Task AddAsync(House house)
