@@ -14,6 +14,8 @@ namespace Airbnb.Core.Services.Contract.HouseServices.Contract
     {
         Task<IEnumerable<ReadHouseDTO>> GetAllHousesAsync();
         Task<ReadHouseDTO> GetHouseByIdAsync(int id);
+        Task<ReadHouseDTO> GetHouseByIdForUpdate(int id);
+
         Task<IEnumerable<ReadHouseDTO>> GetHousesByHostAsync(string hostId);
         Task AddHouseAsync(CreateHouseDTO createHouseDTO);
         Task DeleteHouseAsync(int houseId);
