@@ -63,18 +63,18 @@ namespace Airbnb.Repository.Repositories
 
         public async Task<IEnumerable<House>> GetHousesByCityAsync(string city)
         {
-            return await _context.Houses.Where(H => H.IsDeleted == false && H.City == city).ToListAsync();
+            return await _context.Houses.Where(H => H.IsDeleted == false && H.City == city && H.IsAvailable == true).ToListAsync();
         }
 
         public async Task<IEnumerable<House>> GetHousesByViewAsync(string view)
         {
-            return await _context.Houses.Where(H => H.IsDeleted == false && H.HouseView == view).ToListAsync();
+            return await _context.Houses.Where(H => H.IsDeleted == false && H.HouseView == view && H.IsAvailable == true).ToListAsync();
         }
 
         public async Task<IEnumerable<House>> GetHousesByPriceRangeAsync(decimal minPrice, decimal maxPrice)
         {
             return await _context.Houses
-                .Where(h => h.PricePerNight >= minPrice && h.PricePerNight <= maxPrice && h.IsDeleted == false)
+                .Where(h => h.PricePerNight >= minPrice && h.PricePerNight <= maxPrice && h.IsDeleted == false && h.IsAvailable == true)
                 .ToListAsync();
         }
 
@@ -86,7 +86,7 @@ namespace Airbnb.Repository.Repositories
                                     h.Country.Contains(keyword) ||
                                     h.City.Contains(keyword) ||
                                     h.Street.Contains(keyword) ||
-                                    h.HouseView.Contains(keyword)) && h.IsDeleted == false
+                                    h.HouseView.Contains(keyword)) && h.IsDeleted == false && h.IsAvailable == true
                                     )
                             .ToListAsync();
         }
