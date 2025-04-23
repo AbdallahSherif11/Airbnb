@@ -42,7 +42,7 @@ namespace Airbnb.Repository.Repositories
         {
             return await _context.WishLists
                 .Include(w => w.House)
-                .Where(w => w.GuestId == guestId)
+                .Where(w => w.GuestId == guestId && w.House.IsAvailable && w.House.IsDeleted == false)
                 .ToListAsync();
         }
     }
