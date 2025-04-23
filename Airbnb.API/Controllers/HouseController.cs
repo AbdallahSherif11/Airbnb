@@ -53,7 +53,7 @@ namespace Airbnb.API.Controllers
         [HttpGet("updateHouse/{id}")]
         public async Task<ActionResult<ReadHouseDTO>> GetHouseByIdForUpdate(int id)
         {
-            var house = await _houseService.GetHouseByIdAsync(id);
+            var house = await _houseService.GetHouseByIdForUpdate(id);
             if (house == null)
             {
                 return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
