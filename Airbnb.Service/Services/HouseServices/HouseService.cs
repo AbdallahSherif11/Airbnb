@@ -40,6 +40,12 @@ namespace Airbnb.Service.Services.HouseServices
             return _mapper.Map<ReadHouseDTO>(house);
         }
 
+        public async Task<ReadHouseDTO> GetHouseByIdForUpdate(int id)
+        {
+            var house = await _unitOfWork.HouseRepository.GetAsyncForUpdate(id);
+            return _mapper.Map<ReadHouseDTO>(house);
+        }
+
         public async Task<IEnumerable<ReadHouseDTO>> GetHousesByHostAsync(string hostId)
         {
             var houses = await _unitOfWork.HouseRepository.GetHousesByConditionAsync(h => h.HostId == hostId && !h.IsDeleted);

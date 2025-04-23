@@ -50,6 +50,17 @@ namespace Airbnb.API.Controllers
             return Ok(house);
         }
 
+        [HttpGet("updateHouse/{id}")]
+        public async Task<ActionResult<ReadHouseDTO>> GetHouseByIdForUpdate(int id)
+        {
+            var house = await _houseService.GetHouseByIdAsync(id);
+            if (house == null)
+            {
+                return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
+            }
+            return Ok(house);
+        }
+
         [Authorize]
         [HttpGet("my-houses")]
         public async Task<IActionResult> GetMyHouses()
