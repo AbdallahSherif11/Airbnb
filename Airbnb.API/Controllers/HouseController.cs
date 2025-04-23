@@ -167,7 +167,7 @@ namespace Airbnb.API.Controllers
         {
             if (Houseid != null && Title != null)
             {
-                if (await _houseService.GetHouseByIdAsync(Houseid) == null)
+                if (await _houseService.GetHouseByIdForUpdate(Houseid) == null)
                 {
                     return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
@@ -186,7 +186,7 @@ namespace Airbnb.API.Controllers
         {
             if (Houseid != null && description != null)
             {
-                if (await _houseService.GetHouseByIdAsync(Houseid) == null)
+                if (await _houseService.GetHouseByIdForUpdate(Houseid) == null)
                 {
                     return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
@@ -204,7 +204,7 @@ namespace Airbnb.API.Controllers
         {
             if (Houseid != null && PricePerNight != null)
             {
-                if (await _houseService.GetHouseByIdAsync(Houseid) == null)
+                if (await _houseService.GetHouseByIdForUpdate(Houseid) == null)
                 {
                     return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
@@ -222,7 +222,7 @@ namespace Airbnb.API.Controllers
         {
             if (Houseid != null && updateHouseLocationDTO != null)
             {
-                if (await _houseService.GetHouseByIdAsync(Houseid) == null)
+                if (await _houseService.GetHouseByIdForUpdate(Houseid) == null)
                 {
                     return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
@@ -240,7 +240,7 @@ namespace Airbnb.API.Controllers
         {
             if (Houseid != null && updateHouseAvailabilityDTO != null)
             {
-                if (await _houseService.GetHouseByIdAsync(Houseid) == null)
+                if (await _houseService.GetHouseByIdForUpdate(Houseid) == null)
                 {
                     return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
@@ -259,7 +259,7 @@ namespace Airbnb.API.Controllers
         {
             if (Houseid != null && images != null)
             {
-                if (await _houseService.GetHouseByIdAsync(Houseid) == null)
+                if (await _houseService.GetHouseByIdForUpdate(Houseid) == null)
                 {
                     return NotFound(new ApiErrorResponse(404, "There is no house with this ID."));
                 }
