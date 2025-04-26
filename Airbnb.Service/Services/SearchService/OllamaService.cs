@@ -16,6 +16,9 @@ namespace Airbnb.Service.Services.SearchService
 
         public async Task<FilterResult> ExtractFiltersFromPromptAsync(string prompt)
         {
+
+            string[] availableViews = new string[] { "Desert", "Camping", "Mountain", "Lake", "City", "Farms", "Boats" , "Beach" , "Room" , "Towers" , "Barns" , "Forest"};
+
             var refinedPrompt =
                     "Extract only the explicitly mentioned or clearly implied filters from the user query below. " +
                     "Return a valid JSON object using the following structure, and nothing else:\n\n" +
@@ -33,7 +36,9 @@ namespace Airbnb.Service.Services.SearchService
                     "- You may infer the number of beds if the number of people is clearly stated or implied (e.g., \"me and my friend\" → beds: 2).\n" +
                     "- If any field is not mentioned or implied, return null.\n" +
                     "- Correct obvious spelling mistakes in country or city names.\n" +
-                    "- Return only raw JSON without any comments, formatting, or explanation.\n\n" +
+                    "- Return only raw JSON without any comments, formatting, or explanation.\n" +
+                    $"The available house views are: {string.Join(", ", availableViews)}.\n" +
+                    $"Please match the user's input to the closest available view.\n\n" +
                     $"Query: {prompt}";
 
 
@@ -47,7 +52,7 @@ namespace Airbnb.Service.Services.SearchService
                 stream = false
             };
 
-            var response = await _httpClient.PostAsJsonAsync("https://7233-197-54-31-93.ngrok-free.app/api/generate", request);
+            var response = await _httpClient.PostAsJsonAsync("http://localhost:11434/api/generate", request);
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
