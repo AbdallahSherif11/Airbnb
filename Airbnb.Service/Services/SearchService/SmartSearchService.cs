@@ -49,7 +49,10 @@ namespace Airbnb.Service.Services.SearchService
                     query = query.Where(h => h.PricePerNight <= filters.MaxPrice.Value);
 
                 if (!string.IsNullOrWhiteSpace(filters.HouseView))
-                    query = query.Where(h => h.HouseView.ToLower().Contains(filters.HouseView.ToLower()));
+                {
+                    var loweredHouseView = filters.HouseView.ToLower();
+                    query = query.Where(h => h.HouseView != null && h.HouseView.ToLower().Contains(loweredHouseView));
+                }
 
                 if (filters.Amenities is { Count: > 0 })
                 {
